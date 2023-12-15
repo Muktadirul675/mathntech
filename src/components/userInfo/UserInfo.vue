@@ -3,6 +3,7 @@ import { ref, onBeforeMount } from 'vue';
 import { RouterLink } from 'vue-router';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from "@/stores/authStore"
+import Bookmark from './Bookmark.vue';
 
 let authStore = useAuthStore()
 
@@ -20,6 +21,10 @@ function signInWithGoogle() {
 
 <template>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
         <div class="offcanvas-body">
             <div v-if="!authStore.logged" class="loginButtons">
                 <button @click="signInWithGoogle">Login</button>
@@ -48,6 +53,7 @@ function signInWithGoogle() {
                         Logout
                     </button>
                 </div>
+                <Bookmark></Bookmark>
             </div>
         </div>
     </div>
@@ -65,14 +71,15 @@ function signInWithGoogle() {
     height: 130px;
     width: 130px;
 }
-.userInfo .infoGroup .info{
-    margin-top:8px;
+
+.userInfo .infoGroup .info {
+    margin-top: 8px;
     margin-bottom: 8px;
 }
+
 .userInfo .infoGroup .info .infoIcon {
     height: 30px;
     widows: 30px;
     margin-right: 5px;
 }
-
 </style>
