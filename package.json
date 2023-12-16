@@ -35,6 +35,7 @@
     "@ckeditor/vite-plugin-ckeditor5": "^0.1.3",
     "@supabase/supabase-js": "^2.39.0",
     "@wiris/mathtype-ckeditor5": "^8.7.2",
+    "epic-spinners": "^2.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.3.10",
     "vue-router": "^4.2.5"
