@@ -6,7 +6,7 @@ import UserInfo from '@/components/userInfo/UserInfo.vue'
 
 <template>
   <header>
-    <Nav></Nav>
+      <Nav></Nav>
     <UserInfo></UserInfo>
   </header>
   <div class="container">

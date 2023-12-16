@@ -44,12 +44,12 @@ onBeforeMount(async () => {
     </div>
 </template>
 
-<style scoped>
+<style>
 #navbar {
     background-color: #FFDE59;
     position: sticky;
     top: 0;
-    left: 0;
+    z-index: 99 !important;
 }
 
 .bar {
