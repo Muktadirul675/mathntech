@@ -46,7 +46,7 @@ onBeforeMount(async () => {
 
 <style>
 #navbar {
-    background-color: #FFDE59;
+    background-color: var(--yellow);
     position: sticky;
     top: 0;
     z-index: 99 !important;

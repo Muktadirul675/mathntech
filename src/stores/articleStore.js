@@ -4,18 +4,20 @@ import { supabase } from '@/lib/supabase';
 
 export const useArticleStore = defineStore('articles', () => {
     const articles = ref(null)
+    const publicArticles = computed(()=>{
+        if(articles.value){
+            return articles.value.filter((obj)=>{
+                return obj.status == 'public'
+            })
+        }
+    })
     const loading = computed(() => {
         return ((articles.value == null))
     })
 
     async function getArticles() {
-        const { articleData, error } = await supabase
-            .from('articles')
-            .select()
-            .then((articleData) => {
-                articles.value = articleData.data
-                console.log('article store article value ', articles.value)
-            })
+        const { data, error } = await supabase.from('articles').select()
+        articles.value = data
     }
 
     getArticles()
@@ -27,5 +29,5 @@ export const useArticleStore = defineStore('articles', () => {
         }
     }
 
-    return { articles, loading, getArticle }
+    return { articles, loading, getArticle, publicArticles }
 })

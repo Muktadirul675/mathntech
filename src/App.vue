@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Nav from '@/components/Nav.vue'
 import UserInfo from '@/components/userInfo/UserInfo.vue'
+import '@/assets/main.css';
 </script>
 
 <template>
