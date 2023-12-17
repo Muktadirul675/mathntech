@@ -12,7 +12,7 @@ let bookmarkStore = useBookmarkStore()
 let deleting = ref(false)
 let deleted = ref(false)
 
-async function del() {
+function del() {
     deleting.value = true
     bookmarkStore.deleteBookmark(article.id).then(deleted.value=true)
 }
@@ -20,7 +20,7 @@ async function del() {
 </script>
 
 <template>
-    <div v-if="!deleted" class="bookmarkItem container-fluid">
+    <div v-show="!deleted" class="bookmarkItem container-fluid">
         <div class="row">
             <div class="col-10">
                 <span>
@@ -30,10 +30,7 @@ async function del() {
                     article.articles.subject }}</span>
             </div>
             <div class="col-2">
-                <div v-if="deleting" class="spinner-border text-danger" role="status">
-                    <span class="visually-hidden">Deleting...</span>
-                </div>
-                <span v-else @click="del" class="text-danger">
+                <span @click="del" class="text-danger" style="cursor: pointer;">
                     <i class="fi fi-rr-trash"></i>
                 </span>
             </div>

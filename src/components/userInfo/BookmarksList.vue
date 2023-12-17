@@ -1,11 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { supabase } from '@/lib/supabase';
 import { useBookmarkStore } from '@/stores/bookmarkStore.js'
 import BookmarksItem from './BookmarksItem.vue';
 
-let bookmarks = ref(null)
 let bookmarksStore = useBookmarkStore();
+let bookmarks = computed(()=>{
+    if(bookmarksStore.userBookmarks){return bookmarksStore.userBookmarks}
+    else{return null}
+})
 
 </script>
 
@@ -18,11 +21,16 @@ let bookmarksStore = useBookmarkStore();
         </div>
         <div class="row">
             <div class="list">
-                <div v-if="!bookmarksStore.userBookmarks" class="spinner-border text-warning" role="status">
+                <div v-if="!bookmarks" class="spinner-border text-warning" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <div v-else>
-                    <BookmarksItem v-for="bm in bookmarksStore.userBookmarks" :article="bm"></BookmarksItem>
+                    <div v-if="bookmarks.length == 0">
+                        No bookmarks
+                    </div>
+                    <div v-else  v-for="bm in bookmarks">
+                        <BookmarksItem :article="bm"></BookmarksItem>
+                    </div>
                 </div>
             </div>
         </div>

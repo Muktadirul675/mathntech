@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from "@/stores/authStore"
 import BookmarkList from './BookmarksList.vue';
 
 let authStore = useAuthStore()
+const router = useRouter()
 
 onBeforeMount(() => {
     authStore.checkUser()
@@ -48,10 +49,11 @@ function signInWithGoogle() {
                             <b>{{ authStore.loggedUser.email }}</b>
                         </div>
                     </div> <br>
-                    <button type="button " @click="authStore.logout" class="btn btn-danger" data-bs-dismiss="offcanvas"
+                    <button type="button " @click="authStore.logout" class="btn btn-danger mx-1" data-bs-dismiss="offcanvas"
                         aria-label="Close">
                         Logout
                     </button>
+                    <button type="button" aria-label="close" @click="router.push({name:'addArticle'})" v-if="authStore.isAdmin" class="btn btn-success mx-1" data-bs-dismiss="offcanvas">Add Article</button>
                 </div>
                 <BookmarkList></BookmarkList>
             </div>

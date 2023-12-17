@@ -13,7 +13,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
         if (authStore.logged) {
             let { data: sbBookmarks, error } = await supabase
                 .from('bookmarks')
-                .select(`*,articles(id,title,subject,type)`)
+                .select(`id,articles(id,title,subject)`)
 
             if (sbBookmarks) { bookmarks.value = sbBookmarks; }
         } else { bookmarks.value = null }
@@ -48,15 +48,8 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
         const { error } = await supabase
             .from('bookmarks')
             .delete()
-            .eq('id', id).then(console.log('deleted'))
+            .eq('id', id)
         if(error){console.log('error ',error)}
-        let newList = []
-        for(var i of userBookmarks.value){
-            if(!(i.id == id)){
-                newList.push(i)
-            }
-        }
-        userBookmarks.value = newList
     }
 
     return { bookmarks, userBookmarks, deleteBookmark, addBookmark }
