@@ -1,18 +1,43 @@
 <script setup>
+import { ref } from 'vue';
+import { supabase } from '@/lib/supabase';
+import { useBookmarkStore } from '@/stores/bookmarkStore';
+
 const props = defineProps({
-    article : Object
+    article: Object
 })
 
 let article = props.article
+let bookmarkStore = useBookmarkStore()
+let deleting = ref(false)
+let deleted = ref(false)
+
+async function del() {
+    deleting.value = true
+    bookmarkStore.deleteBookmark(article.id).then(deleted.value=true)
+}
 
 </script>
 
 <template>
-    <div class="bookmarkItem p-3 my-1 container-fluid">
+    <div v-if="!deleted" class="bookmarkItem container-fluid">
         <div class="row">
             <div class="col-10">
-                {{ article.articles.title }}
+                <span>
+                    {{ article.articles.title  }}
+                </span> <br>
+                <span class="px-2 py-1 bg-warning text-white" style="border-radius: 30px;font-size: smaller;">{{
+                    article.articles.subject }}</span>
+            </div>
+            <div class="col-2">
+                <div v-if="deleting" class="spinner-border text-danger" role="status">
+                    <span class="visually-hidden">Deleting...</span>
+                </div>
+                <span v-else @click="del" class="text-danger">
+                    <i class="fi fi-rr-trash"></i>
+                </span>
             </div>
         </div>
+        <hr>
     </div>
 </template>

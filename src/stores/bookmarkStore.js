@@ -7,13 +7,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     let authStore = useAuthStore()
     authStore.checkUser()
     let bookmarks = ref(null)
-    let userBookmarks = computed(() => {
-        if (bookmarks.value) {
-            return bookmarks.value.filter((obj) => {
-                return obj.email == authStore.loggedUser.email
-            })
-        } else { return null; }
-    })
+    let userBookmarks = ref(null)
 
     async function getBookmarks() {
         if (authStore.logged) {
@@ -21,11 +15,49 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
                 .from('bookmarks')
                 .select(`*,articles(id,title,subject,type)`)
 
-            if (sbBookmarks) { bookmarks.value = sbBookmarks; console.log(bookmarks.value) }
+            if (sbBookmarks) { bookmarks.value = sbBookmarks; }
         } else { bookmarks.value = null }
     }
 
-    getBookmarks()
+    async function getUserBookmarks() {
+        if (authStore.logged) {
+            let { data: sbBookmarks, error } = await supabase
+                .from('bookmarks')
+                .select(`*,articles(id,title,subject,type)`)
+                .eq('email',authStore.loggedUser.email)
 
-    return { bookmarks, userBookmarks }
+            if (sbBookmarks) { userBookmarks.value = sbBookmarks;}
+        } else { userBookmarks.value = null }
+    }
+
+    getBookmarks()
+    getUserBookmarks()
+
+    async function addBookmark(articleId) {
+        const { error } = await supabase
+            .from('bookmarks')
+            .insert([{
+                article : articleId,
+                email : authStore.loggedUser.email
+            }]).then(console.log('added'))
+        if(error){console.log('error ',error)}
+        getUserBookmarks()
+    }
+
+    async function deleteBookmark(id) {
+        const { error } = await supabase
+            .from('bookmarks')
+            .delete()
+            .eq('id', id).then(console.log('deleted'))
+        if(error){console.log('error ',error)}
+        let newList = []
+        for(var i of userBookmarks.value){
+            if(!(i.id == id)){
+                newList.push(i)
+            }
+        }
+        userBookmarks.value = newList
+    }
+
+    return { bookmarks, userBookmarks, deleteBookmark, addBookmark }
 })

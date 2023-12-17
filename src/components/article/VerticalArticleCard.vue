@@ -1,6 +1,7 @@
 <script setup>
 import ArticleImage from './ArticleImage.vue';
 import Tags from './Tags.vue';
+import BookmarkSign from './BookmarkSign.vue';
 
 let props = defineProps({
     article: Object
@@ -34,12 +35,7 @@ function truncate(value, length) {
                         <Tags :article="article"></Tags>
                     </div>
                     <div class="col-1 p-1">
-                        <div>
-                            <i class="fi fi-sr-bookmark text-warning"></i> 
-                        </div>
-                        <div>
-                            <i class="fi fi-br-bookmark text-warning"></i>
-                        </div>
+                        <BookmarkSign :article="article"></BookmarkSign>
                     </div>
                 </div>
         </div>
