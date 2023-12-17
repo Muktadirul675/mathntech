@@ -3,7 +3,7 @@ import { ref, onBeforeMount } from 'vue';
 import { RouterLink } from 'vue-router';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from "@/stores/authStore"
-import Bookmark from './Bookmark.vue';
+import BookmarkList from './BookmarksList.vue';
 
 let authStore = useAuthStore()
 
@@ -53,7 +53,7 @@ function signInWithGoogle() {
                         Logout
                     </button>
                 </div>
-                <Bookmark></Bookmark>
+                <BookmarkList></BookmarkList>
             </div>
         </div>
     </div>

@@ -29,7 +29,19 @@ function truncate(value, length) {
             </div>
             <span class="subject bg-warning text-white px-2 py-1" style="border-radius: 30px; font-size: smaller;">{{
                 article.subject }}</span>
-            <Tags :article="article"></Tags>
+                <div class="row">
+                    <div class="col-11">
+                        <Tags :article="article"></Tags>
+                    </div>
+                    <div class="col-1 p-1">
+                        <div>
+                            <i class="fi fi-sr-bookmark text-warning"></i> 
+                        </div>
+                        <div>
+                            <i class="fi fi-br-bookmark text-warning"></i>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </template>

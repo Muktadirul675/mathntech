@@ -8,7 +8,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function checkUser() {
         const { data: { user } } = await supabase.auth.getUser()
-        console.log(user)
         if (user) { logged.value = true; loggedUser.value = user.user_metadata } else { logged.value = false; loggedUser.value = null }
     }
 
