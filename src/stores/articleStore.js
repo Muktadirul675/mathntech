@@ -16,7 +16,7 @@ export const useArticleStore = defineStore('articles', () => {
     })
 
     async function getArticles() {
-        const { data } = await supabase.from('articles').select()
+        const { data } = await supabase.from('articles').select('*')
         articles.value = data
     }
 

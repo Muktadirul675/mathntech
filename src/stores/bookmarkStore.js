@@ -39,7 +39,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             .insert([{
                 article : articleId,
                 email : authStore.loggedUser.email
-            }]).then(console.log('added'))
+            }])
         if(error){console.log('error ',error)}
         getUserBookmarks()
     }
@@ -50,6 +50,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             .delete()
             .eq('id', id)
         if(error){console.log('error ',error)}
+        getUserBookmarks()
     }
 
     return { bookmarks, userBookmarks, deleteBookmark, addBookmark }

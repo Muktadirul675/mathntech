@@ -13,7 +13,9 @@ let article = props.article;
     <div class="articleCard p-3 shadow-sm">
         <ArticleImage :article="article" type="hArticle"></ArticleImage>
         <div class="p-1 mx-1">
-            <h6>{{ article.title }}</h6>
+            <h6>
+                <RouterLink :to="{name:'article',params:{id:article.id}}">{{ article.title }}</RouterLink> 
+            </h6>
             <Tags :article="article"></Tags>
         </div>
     </div>
