@@ -3,7 +3,6 @@ import { ref, computed } from 'vue';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/stores/authStore';
 import ArticleComment from './articleComment.vue';
-import { Warning } from 'postcss';
 
 const props = defineProps({
     article: Object
@@ -19,7 +18,7 @@ async function getComments() {
         .from('comments')
         .select('*')
         .eq('article', props.article.id)
-        .then((res) => { console.log(res); comments.value = res.data })
+        .then((res) => { comments.value = res.data })
 }
 
 getComments()
