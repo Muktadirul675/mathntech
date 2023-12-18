@@ -3,8 +3,10 @@ import { computed, onMounted, onBeforeMount } from 'vue'
 import { RouterView, useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import { useArticleStore } from '@/stores/articleStore';
+import ArticleCommentList from '@/components/article/articleCommentList.vue';
 import Loading from '@/components/Loading.vue';
 import BookmarkSign from '@/components/article/BookmarkSign.vue';
+import Tags from '@/components/article/Tags.vue';
 
 const articleStore = useArticleStore()
 const authStore = useAuthStore()
@@ -37,6 +39,10 @@ onBeforeMount(() => {
                 <br> <br>
                 <div class="ck-content">
                     <div v-html="article.body"></div>
+                </div>
+                <div v-if="article != null">
+                    <Tags :article="article"></Tags> <br>
+                    <ArticleCommentList :article="article"></ArticleCommentList>
                 </div>
             </div>
             <div class="col-1">
@@ -82,23 +88,30 @@ onBeforeMount(() => {
     justify-content: center;
     padding-top: 50px;
     height: 100vh;
-    position: sticky; top:0;
+    position: sticky;
+    top: 0;
 }
 
-.tool{margin-bottom: 10px;}
+.tool {
+    margin-bottom: 10px;
+}
 
 @media (max-width:998px) {
-    .articleSideTools{
+    .articleSideTools {
         display: inherit;
         position: inherit;
         padding: 10px;
         height: fit-content;
     }
-    .toolList{
+
+    .toolList {
         display: flex;
         justify-content: center;
     }
-    .tool{margin: 5px;padding:0 10px 0 10px}
-}
 
+    .tool {
+        margin: 5px;
+        padding: 0 10px 0 10px
+    }
+}
 </style>
