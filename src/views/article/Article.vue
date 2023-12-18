@@ -40,32 +40,32 @@ onBeforeMount(() => {
                 <div class="ck-content">
                     <div v-html="article.body"></div>
                 </div>
+                <div class="col-1">
+                    <div class="articleSideTools">
+                        <div class="toolList">
+                            <div class="tool">
+                                <BookmarkSign :article="article"></BookmarkSign>
+                            </div>
+                            <div v-if="authStore.isAdmin" class="tool ">
+                                <RouterLink :to="{ name: 'updateArticle', params: { id: article.id } }">
+                                    <i class="fi fi-sr-blog-pencil text-warning"></i>
+                                </RouterLink>
+                            </div>
+                            <div class="tool text-warning">
+                                <i class="fi fi-rr-comments"></i>
+                            </div>
+                            <div class="tool text-warning">
+                                <i class="fi fi-rr-share-square"></i>
+                            </div>
+                            <div class="tool text-danger">
+                                <i class="fi fi-rr-exclamation"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div v-if="article != null">
                     <Tags :article="article"></Tags> <br>
                     <ArticleCommentList :article="article"></ArticleCommentList>
-                </div>
-            </div>
-            <div class="col-1">
-                <div class="articleSideTools">
-                    <div class="toolList">
-                        <div class="tool">
-                            <BookmarkSign :article="article"></BookmarkSign>
-                        </div>
-                        <div v-if="authStore.isAdmin" class="tool ">
-                            <RouterLink :to="{ name: 'updateArticle', params: { id: article.id } }">
-                                <i class="fi fi-sr-blog-pencil text-warning"></i>
-                            </RouterLink>
-                        </div>
-                        <div class="tool text-warning">
-                            <i class="fi fi-rr-comments"></i>
-                        </div>
-                        <div class="tool text-warning">
-                            <i class="fi fi-rr-share-square"></i>
-                        </div>
-                        <div class="tool text-danger">
-                            <i class="fi fi-rr-exclamation"></i>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
