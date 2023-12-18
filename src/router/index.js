@@ -14,12 +14,12 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path:'/blog',
+      path: '/blog',
       name: 'blog',
       component: BlogView
     },
     {
-      path:'/articles/add',
+      path: '/articles/add',
       name: 'addArticle',
       component: AddArticleView
     },
@@ -29,11 +29,16 @@ const router = createRouter({
       component: UpdateArticle
     },
     {
-      path:'/article/:id',
+      path: '/article/:id',
       name: 'article',
       component: Article
     }
   ]
 })
+
+
+// scrollBehavior(to, from, savedPosition) {
+//   return { top: 0 }
+// },
 
 export default router

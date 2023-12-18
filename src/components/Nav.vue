@@ -14,57 +14,60 @@ onBeforeMount(async () => {
 
 <template>
     <!-- 416788, F26419, FFEE93, 345995, E9D985 -->
-    <div id="navbar" class="container-fluid shadow-sm">
-        <nav class="container">
-            <div class="row p-1">
+    <div class="container-fluid p-1 navbar-yellow">
+        <div class="container">
+            <div class="row">
                 <div class="col-12">
-                    <div class="bar">
-                        <div class="brand">
+                    <div class="content">
+                        <div>
                             <img src="https://res.cloudinary.com/dsfybjdih/image/upload/v1702114953/mathntech/logo_wauvfj.png"
-                                alt="" class="icon">
+                                alt="" class="logo">
                         </div>
                         <div class="navigation ms-auto">
-                            <RouterLink class="btn btn-warning mx-1" to="/"><i class="fi fi-rr-home"></i></RouterLink>
-                            <RouterLink class="btn btn-warning mx-1" to="/blog"><i class="fi fi-br-blog-text"></i>
+                            <RouterLink :to="{name:'home'}" class="mx-1 btn btn-warning">
+                                <i class="fi fi-rr-home"></i>
                             </RouterLink>
-                            <button v-if="authStore.logged" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                                class="btn btn-warning mx-1">
-                                <i class="fi fi-bs-circle-user"></i>
-                            </button>
-                            <button v-else type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                aria-controls="offcanvasRight" class="btn btn-warning mx-1">
-                                <i class="fi fi-br-sign-in-alt"></i>
+                            <RouterLink :to="{name:'blog'}" class="mx-1 btn btn-warning">
+                                <i class="fi fi-br-blog-text"></i>
+                            </RouterLink>
+                            <button class="btn btn-warning mx-1 text-white" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <i v-if="authStore.logged" class="fi fi-sr-circle-user"></i>
+                                <i v-else class="fi fi-br-sign-in-alt"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </div>
 </template>
 
+<!-- <img src="https://res.cloudinary.com/dsfybjdih/image/upload/v1702114953/mathntech/logo_wauvfj.png" alt=""></img> -->
+
 <style>
-#navbar {
-    background-color: var(--yellow);
+.navbar-yellow {
     position: sticky;
     top: 0;
+    background-color: var(--yellow);
     z-index: 99 !important;
 }
 
-.bar {
+.navbar-yellow .logo {
+    height: 80px;
+    width: 80px;
+}
+
+.content {
+    display: flex;
+}
+
+.navigation {
     display: flex;
     align-items: center;
+    justify-content: end;
 }
 
-#navbar .bar .brand .icon {
-    width: 80px;
-    height: 80px;
-}
-
-#navbar .bar .navigation a,
-#navbar .bar .navigation button {
-    text-decoration: none;
+.navigation a {
     color: white;
-}
-</style>
+}</style>

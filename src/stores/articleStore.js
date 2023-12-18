@@ -25,7 +25,6 @@ export const useArticleStore = defineStore('articles', () => {
 
     function getArticle(id) {
         for (var i of articles.value) {
-            console.log(i)
             if (i.id == id) { return i }
         }
     }

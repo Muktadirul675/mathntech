@@ -22,7 +22,7 @@ const articles = computed(() => {
 <template>
     <Loading v-if="articleStore.loading"></Loading>
     <div v-else>
-        <div class="container-fluid">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-8 p-3">
                     <form class="form-group">

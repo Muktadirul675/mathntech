@@ -40,9 +40,7 @@ async function update() {
       tags: tags.value,
     })
     .eq('id', id)
-    .then(() =>{
-      loading.value = false;
-    })
+    if(error){console.log(error)}
 
 }
 
