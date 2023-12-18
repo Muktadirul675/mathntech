@@ -36,7 +36,9 @@ const article = computed(() => {
                 <span style="font: smaller;border-radius: 30px;" class="px-2 py-1 bg-warning text-white">{{ article.subject
                 }}</span>
                 <br> <br>
-                <div v-html="article.body"></div>
+                <div class="ck-content">
+                    <div v-html="article.body"></div>
+                </div>
             </div>
         </div>
     </div>

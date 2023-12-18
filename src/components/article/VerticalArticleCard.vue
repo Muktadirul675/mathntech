@@ -23,13 +23,13 @@ function truncate(value, length) {
     <div class="articleCard p-3 shadow-sm my-1">
         <div class="image">
             <ArticleImage :article="article" type="vArticle"></ArticleImage>
-        </div>
+        </div> <br>
         <div class="heading">
             <h6> 
                 <RouterLink :to="{name:'article',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>
-            </h6>
-            <div style="font-size: small;" class="text-muted my-1">
+            </h6> <br>
+            <div style="font-size: small;" class="text-muted">
                 {{ truncate(article.body, 100) }}
             </div>
             <span class="subject bg-warning text-white px-2 py-1" style="border-radius: 30px; font-size: smaller;">{{
