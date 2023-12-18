@@ -28,7 +28,7 @@ function truncate(value, length) {
             <h6> 
                 <RouterLink :to="{name:'article',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>
-            </h6> <br>
+            </h6> 
             <div style="font-size: small;" class="text-muted">
                 {{ truncate(article.body, 100) }}
             </div>
