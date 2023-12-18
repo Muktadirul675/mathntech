@@ -20,7 +20,7 @@ function del() {
 </script>
 
 <template>
-    <div v-show="!deleted" class="bookmarkItem container-fluid">
+    <div class="bookmarkItem container-fluid">
         <div class="row">
             <div class="col-10">
                 <span>

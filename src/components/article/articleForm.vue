@@ -3,6 +3,13 @@ import { onMounted, ref } from 'vue';
 import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig';
 import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'vue3-toastify';
+
+// Force dismiss specific toast
+// instance.dismiss();
+
+// Dismiss all opened toast immediately
+// $toast.clear();
 
 const props = defineProps({
   fields: Object
@@ -40,7 +47,10 @@ async function update() {
       tags: tags.value,
     })
     .eq('id', id)
-    if(error){console.log(error)}
+  if (error) { console.log(error) } else {
+    loading.value = false
+    toast.info('Updated',{position:toast.POSITION.TOP_RIGHT,type:toast.TYPE.INFO})
+  }
 
 }
 

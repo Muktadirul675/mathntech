@@ -1,15 +1,19 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useBookmarkStore } from '@/stores/bookmarkStore';
+import { useAuthStore } from '@/stores/authStore';
+import { toast } from 'vue3-toastify';
 
 const props = defineProps({
     article: Object
 })
 
 const bookmarkStore = useBookmarkStore()
+let authStore = useAuthStore()
 
 let bookmark = ref(null)
 let isLoading = ref(false)
+let isLogged = computed(() => authStore.logged)
 let isBookmarked = computed(() => {
     if (bookmarkStore.userBookmarks) {
         for (var i of bookmarkStore.userBookmarks) {
@@ -19,40 +23,51 @@ let isBookmarked = computed(() => {
     } else { return null }
 })
 
- function del() {
+function del() {
     isLoading.value = true
-    bookmarkStore.deleteBookmark(bookmark.value.id).then(isLoading.value = false)
+    bookmarkStore.deleteBookmark(bookmark.value.id).then(()=>{isLoading.value = false})
 }
 
- function add() {
-    isLoading.value = true
-    bookmarkStore.addBookmark(props.article.id).then(isLoading.value = false)
+function add() {
+    if(isLogged.value){
+        isLoading.value = true
+        bookmarkStore.addBookmark(props.article.id).then(()=>{isLoading.value = false;toast.success('Bookmarked')})
+    }else{
+        toast.error('Login to add bookmark',{position:toast.POSITION.TOP_RIGHT})
+    }
 }
 
 </script>
 
 <template>
     <div style="cursor: pointer;">
-        <div v-if="isBookmarked === null">
-            <div class="spinner-border text-warning" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        <div v-else>
-            <div v-if="isBookmarked">
-                <div @click="del">
-                    <i class="fi fi-sr-bookmark text-warning"></i>
+        <div v-if="isLogged">
+            <div v-if="isBookmarked === null">
+                <div class="spinner-border spinner-border-sm text-warning" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
             <div v-else>
-                <div @click="add">
-                    <i class="fi fi-br-bookmark text-warning"></i>
+                <div v-if="isBookmarked">
+                    <div @click="del">
+                        <i class="fi fi-sr-bookmark text-warning"></i>
+                    </div>
                 </div>
+                <div v-else>
+                    <div @click="add">
+                        <i class="fi fi-br-bookmark text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <div @click="add">
+                <i class="fi fi-br-bookmark text-warning"></i>
             </div>
         </div>
     </div>
     <div>
-        <div v-if="isLoading" class="spinner-border text-warning" role="status">
+        <div v-if="isLoading" class="spinner-border spinner-border-sm text-warning" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
