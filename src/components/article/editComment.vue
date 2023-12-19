@@ -17,11 +17,11 @@ const bsCollapse = ref(null)
 
 async function updateArticle() {
     isUpdating.value = true
-    console.log('editing')
+    // console.log('editing')
     const { error } = await supabase.from('comments').update({
         comment: text.value,
     }).eq('id', props.comment.id)
-    if (error) { console.log(error) } else { isUpdating.value = false; text.value = '';new bootstrap.Collapse(`#${collapseId}`).hide()}
+    if (error) { console.log(error) } else { isUpdating.value = false; new bootstrap.Collapse(`#${collapseId}`).hide()}
 }
 
 </script>

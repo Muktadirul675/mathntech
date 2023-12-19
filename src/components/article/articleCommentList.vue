@@ -22,7 +22,7 @@ onMounted(() => {
 
 async function getComments() {
     // let { data: commentsData, error } = 
-    console.log(props.article.id)
+    // console.log(props.article.id)
     await supabase
         .from('comments')
         .select('*')

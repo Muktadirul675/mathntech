@@ -5,10 +5,18 @@ import { supabase } from '@/lib/supabase';
 export const useAuthStore = defineStore('auth', () => {
     const logged = ref(false);
     const loggedUser = ref(null)
-    const isAdmin = computed(()=>{
-        if(logged.value){
-            if(loggedUser.value.email == 'muktadirul.05@gmail.com'){return true;}else{return false;}
-        }else{return false}
+    const allUsers = ref(null)
+
+    async function getAllUsers(){
+        const { data: { users }, error } = await supabase.auth.admin.listUsers()
+        allUsers.value = users
+        console.log(users)
+    }
+
+    const isAdmin = computed(() => {
+        if (logged.value) {
+            if (loggedUser.value.email == 'muktadirul.05@gmail.com') { return true; } else { return false; }
+        } else { return false }
     })
 
     async function checkUser() {
@@ -25,5 +33,5 @@ export const useAuthStore = defineStore('auth', () => {
     checkUser()
 
 
-    return { logged, checkUser, logout, loggedUser, isAdmin }
+    return { logged, checkUser, logout, loggedUser, isAdmin, allUsers }
 })
