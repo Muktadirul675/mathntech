@@ -42,7 +42,6 @@ onBeforeMount(() => {
                 </div>
                 <div v-if="article != null">
                     <Tags :article="article"></Tags> <br>
-                    <ArticleCommentList :article="article"></ArticleCommentList>
                 </div>
             </div>
             <div class="col-1">
@@ -67,6 +66,11 @@ onBeforeMount(() => {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row justify-content-center p-0">
+            <div class="col-12 col-lg-7 col-xl-7">
+                <ArticleCommentList :article="article"></ArticleCommentList>
             </div>
         </div>
     </div>
