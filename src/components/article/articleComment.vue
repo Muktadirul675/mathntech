@@ -10,10 +10,14 @@ const props = defineProps({
 
 const authStore = useAuthStore()
 let canEdit = computed(() => {
-    if (authStore.loggedUser.email == props.comment.email) {
-        return true
-    } else {
-        return false
+    if(authStore.logged){
+        if (authStore.loggedUser.email == props.comment.email) {
+            return true
+        } else {
+            return false
+        }
+    }else{
+        return false;
     }
 })
 
