@@ -24,9 +24,9 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             let { data: sbBookmarks, error } = await supabase
                 .from('bookmarks')
                 .select(`*,articles(id,title,subject,type)`)
-                .eq('email',authStore.loggedUser.email)
+                .eq('email', authStore.loggedUser.email)
 
-            if (sbBookmarks) { userBookmarks.value = sbBookmarks;}
+            if (sbBookmarks) { userBookmarks.value = sbBookmarks; }
         } else { userBookmarks.value = null }
     }
 
@@ -37,10 +37,10 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
         const { error } = await supabase
             .from('bookmarks')
             .insert([{
-                article : articleId,
-                email : authStore.loggedUser.email
+                article: articleId,
+                email: authStore.loggedUser.email
             }])
-        if(error){console.log('error ',error)}
+        if (error) { console.log('error ', error) }
         getUserBookmarks()
     }
 
@@ -49,8 +49,12 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             .from('bookmarks')
             .delete()
             .eq('id', id)
-        if(error){console.log('error ',error)}
-        getUserBookmarks()
+        if (error) { console.log('error ', error) } else {
+            userBookmarks.value = userBookmarks.value.filter((obj) => {
+                    return obj.id != id
+                }
+            )
+        }
     }
 
     return { bookmarks, userBookmarks, deleteBookmark, addBookmark }
