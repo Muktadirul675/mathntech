@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/stores/authStore';
 import ArticleComment from './articleComment.vue';
@@ -13,6 +13,12 @@ const comments = ref(null)
 const isLoading = ref(true)
 const wriittenComment = ref('')
 const isAdding = ref(false)
+
+onMounted(() => {
+    document.getElementById("commentTool").addEventListener('click',()=>{
+        document.getElementById("commentBox").focus()
+    })
+})
 
 async function getComments() {
     // let { data: commentsData, error } = 
@@ -68,8 +74,19 @@ const channels = supabase.channel('custom-all-channel')
         'postgres_changes',
         { event: '*', schema: 'public', table: 'comments' },
         (payload) => {
-            console.log('Change received!', payload)
-            comments.value.push(payload.new)
+            if (payload.eventType == 'INSERT') {
+                comments.value.push(payload.new)
+            }
+            if (payload.eventType == 'UPDATE') {
+                let newComments = comments.value
+                for (var i = 0; i < newComments.length; i++) {
+                    if (newComments[i].id == payload.new.id) {
+                        newComments[i] = payload.new
+                        break
+                    }
+                }
+                comments.value = newComments
+            }
         }
     )
     .subscribe()
@@ -86,11 +103,11 @@ const channels = supabase.channel('custom-all-channel')
             <span class="visually-hidden">Loading...</span>
         </div>
         <div class="commentsList">
-            <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment>
+            <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment> 
             <div class="form my-2">
                 <form class="form-group addComment" @submit="addComment">
-                    <textarea v-model="wriittenComment" type="text" class="form-control" placeholder="Your thoughts..."
-                        name="" id=""> </textarea>
+                    <textarea v-model="wriittenComment" id="commentBox" type="text" class="form-control"
+                        placeholder="Your thoughts..." name=""> </textarea>
                     <div>
                         <div v-if="isAdding" class="spinner-border spinner-border-sm text-warning" role="status">
                             <span class="visually-hidden">Loading...</span>

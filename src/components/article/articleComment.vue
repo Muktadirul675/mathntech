@@ -21,22 +21,12 @@ let canEdit = computed(() => {
     }
 })
 
-const channels = supabase.channel('custom-update-channel')
-  .on(
-    'postgres_changes',
-    { event: 'UPDATE', schema: 'public', table: 'comments' },
-    (payload) => {
-      console.log('Change received!', payload)
-    }
-  )
-  .subscribe()
-
 </script>
 
 <template>
-    <div class="comment my-1">
+    <div class="comment my-2">
         <div class="header" style="display: flex; align-items: center;">
-            <h6 class="name text-warning">{{ comment.name }}</h6>
+            <h6 class="nam">{{ comment.name }}</h6>
             <span class="mx-1 text-muted time">{{ new Date(comment.created_at).toDateString() }}</span>
         </div>
         <div class="content px-2">

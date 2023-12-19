@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { supabase } from '@/lib/supabase'
 
 const props = defineProps({
@@ -9,14 +9,19 @@ const props = defineProps({
 const isUpdating = ref(false)
 const collapseId = `collapse-${props.comment.id}`
 const text = ref(props.comment.comment)
+const bsCollapse = ref(null)
+
+// onMounted(()=>{
+//     bsCollapse.value = new bootstrap.Collapse(`#${collapseId}`).hide()
+// })
 
 async function updateArticle() {
     isUpdating.value = true
     console.log('editing')
-    const {error} =await  supabase.from('comments').update(props.comment.id, {
+    const { error } = await supabase.from('comments').update({
         comment: text.value,
-    })
-    if(error){console.log(error)}else{isUpdating.value = false}
+    }).eq('id', props.comment.id)
+    if (error) { console.log(error) } else { isUpdating.value = false; text.value = '';new bootstrap.Collapse(`#${collapseId}`).hide()}
 }
 
 </script>

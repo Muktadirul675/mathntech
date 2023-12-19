@@ -2,4 +2,8 @@
     --yellow: #FFDE59;
 }
 
+html{
+    scroll-behavior: smooth;
+}
+
 a{text-decoration: none;}

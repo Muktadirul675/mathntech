@@ -55,7 +55,7 @@ onBeforeMount(() => {
                                 <i class="fi fi-sr-blog-pencil text-warning"></i>
                             </RouterLink>
                         </div>
-                        <div class="tool text-warning">
+                        <div id="commentTool" class="tool text-warning">
                             <i class="fi fi-rr-comments"></i>
                         </div>
                         <div class="tool text-warning">
@@ -98,6 +98,7 @@ onBeforeMount(() => {
 
 .tool {
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 @media (max-width:998px) {
