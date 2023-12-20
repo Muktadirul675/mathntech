@@ -114,14 +114,11 @@ const replyChannels = supabase.channel('custom-all-channel')
 
 <template>
     <div>
-        <h5 v-if="isLoading">
-            Comments
-            <span>({{ comments.length }})</span>
-        </h5>
-        <div v-else class="spinner-border spinner-border-sm text-warning" role="status">
+        <div v-if="isLoading" class="spinner-border spinner-border-sm text-warning" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="commentsList">
+        <div v-else class="commentsList">
+            <h5>Comments ({{ comments.length }})</h5>
             <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment>
             <div class="form my-2">
                 <form class="form-group addComment" @submit="addComment">
