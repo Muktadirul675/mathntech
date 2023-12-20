@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, reactive, onMounted } from 'vue';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/stores/authStore';
 import ArticleComment from './articleComment.vue';
@@ -9,13 +9,13 @@ const props = defineProps({
     article: Object
 })
 const authStore = useAuthStore()
-const comments = ref(null)
+const comments = reactive([])
 const isLoading = ref(true)
 const wriittenComment = ref('')
 const isAdding = ref(false)
 
 onMounted(() => {
-    document.getElementById("commentTool").addEventListener('click',()=>{
+    document.getElementById("commentTool").addEventListener('click', () => {
         document.getElementById("commentBox").focus()
     })
 })
@@ -25,10 +25,12 @@ async function getComments() {
     // console.log(props.article.id)
     await supabase
         .from('comments')
-        .select('*')
+        .select('*, replies(*)')
         .eq('article', props.article.id)
         .then((res) => {
-            comments.value = res.data
+            for (var i of res.data) {
+                comments.push(i)
+            }
         })
 }
 
@@ -69,23 +71,39 @@ async function addComment(event) {
 }
 
 
-const channels = supabase.channel('custom-all-channel')
+const commentsChannels = supabase.channel('custom-all-channel')
     .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'comments' },
         (payload) => {
             if (payload.eventType == 'INSERT') {
-                comments.value.push(payload.new)
+                comments.push(payload.new)
             }
-            if (payload.eventType == 'UPDATE') {
-                let newComments = comments.value
-                for (var i = 0; i < newComments.length; i++) {
-                    if (newComments[i].id == payload.new.id) {
-                        newComments[i] = payload.new
-                        break
-                    }
+            // if (payload.eventType == 'UPDATE') {
+            //     let newComments = comments.value
+            //     for (var i = 0; i < newComments.length; i++) {
+            //         if (newComments[i].id == payload.new.id) {
+            //             newComments[i] = payload.new
+            //             break
+            //         }
+            //     }
+            //     comments.value = newComments
+            // }
+        }
+    )
+    .subscribe()
+
+
+const replyChannels = supabase.channel('custom-all-channel')
+    .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'replies' },
+        (payload) => {
+            console.log('Change received!', payload)
+            for(var i=0;i<comments.length;i++){
+                if(comments[i].id == payload.new.comment){
+                    comments[i].replies.push(payload.new)
                 }
-                comments.value = newComments
             }
         }
     )
@@ -95,7 +113,7 @@ const channels = supabase.channel('custom-all-channel')
 
 <template>
     <div>
-        <h5 v-if="comments">
+        <h5 v-if="comments.length != 0">
             Comments
             <span>({{ comments.length }})</span>
         </h5>
@@ -103,7 +121,7 @@ const channels = supabase.channel('custom-all-channel')
             <span class="visually-hidden">Loading...</span>
         </div>
         <div class="commentsList">
-            <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment> 
+            <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment>
             <div class="form my-2">
                 <form class="form-group addComment" @submit="addComment">
                     <textarea v-model="wriittenComment" id="commentBox" type="text" class="form-control"
