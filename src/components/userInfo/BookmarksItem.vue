@@ -26,8 +26,9 @@ async function del() {
         <div class="row">
             <div class="col-10">
                 <span class="my-1">
-                    <RouterLink :to="{ name: 'article', params: { id: article.articles.id } }" type="button" class="mx-1">{{
-                        article.articles.title }}</RouterLink>
+                    <a @click="() => { router.push({ name: 'article', params: { id: article.articles.id } }) }" type="button"
+                        data-bs-dismiss="offcanvas" class="mx-1">{{
+                            article.articles.title }}</a>
                 </span> <br>
                 <span class="px-2 py-1 bg-warning text-white" style="border-radius: 30px;font-size: smaller;">{{
                     article.articles.subject }}</span>

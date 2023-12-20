@@ -1,5 +1,6 @@
 <script setup>
 import { supabase } from '@/lib/supabase';
+import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import { computed, onMounted, ref } from 'vue';
 import EditComment from './editComment.vue';
@@ -39,11 +40,10 @@ let canEdit = computed(() => {
         </div>
         <div class="tools" :id="`${commentId}-tools`">
             <EditComment v-if="canEdit" :comment="comment"></EditComment>
-            <span class="ms-2"></span>
+            <span class="mx-2"></span>
             <CommentReplySign :comment="comment"></CommentReplySign>
-            <span class="mx-2">
-                <DeleteComment :comment="comment"></DeleteComment>
-            </span>
+            <span class="mx-2"></span>
+            <DeleteComment :comment="comment"></DeleteComment>
         </div>
         <div v-if="comment.replies" class="repliesList ps-4 mb-2">
             <div v-for="reply in comment.replies" class="reply">
@@ -54,11 +54,12 @@ let canEdit = computed(() => {
                     {{ reply.reply }}
                 </span> <br>
                 <EditReply v-if="authStore.loggedUser.email == reply.email" :reply="reply"></EditReply>
+                <RouterLink :to="{name:'article',params:{id:164}}">article 164</RouterLink>
             </div>
         </div>
         <!-- <div class="ps-4">
-                            <CommentReplyList :comment="comment"></CommentReplyList>
-                        </div> -->
+                                <CommentReplyList :comment="comment"></CommentReplyList>
+                            </div> -->
     </div>
 </template>
 

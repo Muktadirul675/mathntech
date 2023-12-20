@@ -18,7 +18,7 @@ onBeforeMount(async () => {
 <template>
   <Nav></Nav>
   <UserInfo></UserInfo>
-  <RouterView />
+  <RouterView  :key="$route.path" />
 </template>
 
 <style setup></style>

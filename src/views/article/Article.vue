@@ -17,10 +17,6 @@ const article = computed(() => {
     else { return null }
 })
 
-onBeforeMount(() => {
-    window.scrollTo(0, 0)
-})
-
 </script>
 
 <template>
