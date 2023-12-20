@@ -19,4 +19,6 @@ let arr = tags.split(',')
 .bg-ash{
     background-color: rgb(232, 232, 232);
 }
+
+
 </style>

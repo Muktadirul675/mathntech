@@ -4,6 +4,8 @@ import { useAuthStore } from '@/stores/authStore';
 import { computed, onMounted, ref } from 'vue';
 import EditComment from './editComment.vue';
 import CommentReplySign from './CommentReplySign.vue';
+import EditReply from './EditReply.vue';
+import DeleteComment from './DeleteComment.vue';
 
 const props = defineProps({
     comment: Object
@@ -39,22 +41,24 @@ let canEdit = computed(() => {
             <EditComment v-if="canEdit" :comment="comment"></EditComment>
             <span class="ms-2"></span>
             <CommentReplySign :comment="comment"></CommentReplySign>
+            <span class="mx-2">
+                <DeleteComment :comment="comment"></DeleteComment>
+            </span>
         </div>
         <div v-if="comment.replies" class="repliesList ps-4 mb-2">
             <div v-for="reply in comment.replies" class="reply">
                 <h6>
-
                     {{ reply.name }}
-
                 </h6>
                 <span class="ms-2">
                     {{ reply.reply }}
-                </span>
+                </span> <br>
+                <EditReply v-if="authStore.loggedUser.email == reply.email" :reply="reply"></EditReply>
             </div>
         </div>
         <!-- <div class="ps-4">
-                    <CommentReplyList :comment="comment"></CommentReplyList>
-                </div> -->
+                            <CommentReplyList :comment="comment"></CommentReplyList>
+                        </div> -->
     </div>
 </template>
 

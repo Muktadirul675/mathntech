@@ -9,10 +9,19 @@ const props = defineProps({
     article: Object
 })
 const authStore = useAuthStore()
-const comments = reactive([])
+let comments = reactive([])
 const isLoading = ref(true)
 const wriittenComment = ref('')
 const isAdding = ref(false)
+let count = computed(()=>{
+    if(comments){
+        let total = 0;
+        for(var i of comments){
+            if(!(i.deleted)){total++}
+        }
+        return total;
+    }else{return 0}
+})
 
 onMounted(() => {
     document.getElementById("commentTool").addEventListener('click', () => {
@@ -29,6 +38,7 @@ async function getComments() {
         .eq('article', props.article.id)
         .then((res) => {
             for (var i of res.data) {
+                i.deleted = false
                 comments.push(i)
             }
             isLoading.value = false
@@ -74,27 +84,35 @@ async function addComment(event) {
 
 
 const channels = supabase.channel('comments')
-  .on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'comments' },
-    (payload) => {
-      console.log('Change received!', payload)
-      if(payload.eventType == 'INSERT'){
-          let newObj = payload.new
-          newObj.replies = new Array()
-          comments.push(newObj)
-      }
-      if(payload.eventType == 'UPDATE'){
-        for(var i=0;i<comments.length;i++){
-            if(comments[i].id == payload.new.id){
-                comments[i].comment = payload.new.comment
-                break
+    .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'comments' },
+        (payload) => {
+            console.log('Change received!', payload)
+            if (payload.eventType == 'INSERT') {
+                let newObj = payload.new
+                newObj.replies = new Array()
+                comments.push(newObj)
+            }
+            if (payload.eventType == 'UPDATE') {
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].id == payload.new.id) {
+                        comments[i].comment = payload.new.comment
+                        break
+                    }
+                }
+            }
+            if (payload.eventType == 'DELETE') {
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].id == payload.old.id) {
+                        comments[i].deleted = true
+                        break
+                    }
+                }
             }
         }
-      }
-    }
-  )
-  .subscribe()
+    )
+    .subscribe()
 
 
 const replyChannels = supabase.channel('replies')
@@ -103,10 +121,25 @@ const replyChannels = supabase.channel('replies')
         { event: '*', schema: 'public', table: 'replies' },
         (payload) => {
             console.log('Change received!', payload)
-            for(var i=0;i<comments.length;i++){
-                if(comments[i].id == payload.new.comment){
-                    comments[i].replies.push(payload.new)
-                    break
+            if (payload.eventType == 'INSERT') {
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].id == payload.new.comment) {
+                        comments[i].replies.push(payload.new)
+                        break
+                    }
+                }
+            }
+            if (payload.eventType == 'UPDATE') {
+                for (var i = 0; i < comments.length; i++) {
+                    if (comments[i].id == payload.new.comment) {
+                        for (var j = 0; j < comments[i].replies.length; j++) {
+                            if (comments[i].replies[j].id == payload.new.id) {
+                                comments[i].replies[j].reply = payload.new.reply
+                                break
+                            }
+                        }
+                        break
+                    }
                 }
             }
         }
@@ -121,8 +154,9 @@ const replyChannels = supabase.channel('replies')
             <span class="visually-hidden">Loading...</span>
         </div>
         <div v-else class="commentsList">
-            <h5>Comments ({{ comments.length }})</h5>
-            <ArticleComment v-for="comment in comments" :comment="comment"></ArticleComment>
+            <h5 v-if="count">Comments ({{ count }})</h5>
+            <h5 v-else>Share your thoughts...</h5>
+            <ArticleComment v-for="comment in comments" v-show="!comment.deleted"  :comment="comment"></ArticleComment>
             <div class="form my-2">
                 <form class="form-group addComment" @submit="addComment">
                     <textarea v-model="wriittenComment" id="commentBox" type="text" class="form-control"
