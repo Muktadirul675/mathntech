@@ -79,9 +79,19 @@ const channels = supabase.channel('comments')
     { event: '*', schema: 'public', table: 'comments' },
     (payload) => {
       console.log('Change received!', payload)
-      let newObj = payload.new
-      newObj.replies = new Array()
-      comments.push(newObj)
+      if(payload.eventType == 'INSERT'){
+          let newObj = payload.new
+          newObj.replies = new Array()
+          comments.push(newObj)
+      }
+      if(payload.eventType == 'UPDATE'){
+        for(var i=0;i<comments.length;i++){
+            if(comments[i].id == payload.new.id){
+                comments[i].comment = payload.new.comment
+                break
+            }
+        }
+      }
     }
   )
   .subscribe()
@@ -96,6 +106,7 @@ const replyChannels = supabase.channel('replies')
             for(var i=0;i<comments.length;i++){
                 if(comments[i].id == payload.new.comment){
                     comments[i].replies.push(payload.new)
+                    break
                 }
             }
         }
