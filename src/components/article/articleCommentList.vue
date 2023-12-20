@@ -72,30 +72,22 @@ async function addComment(event) {
 }
 
 
-const commentsChannels = supabase.channel('custom-all-channel')
-    .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'comments' },
-        (payload) => {
-            if (payload.eventType == 'INSERT') {
-                comments.push(payload.new)
-            }
-            // if (payload.eventType == 'UPDATE') {
-            //     let newComments = comments.value
-            //     for (var i = 0; i < newComments.length; i++) {
-            //         if (newComments[i].id == payload.new.id) {
-            //             newComments[i] = payload.new
-            //             break
-            //         }
-            //     }
-            //     comments.value = newComments
-            // }
-        }
-    )
-    .subscribe()
+
+const channels = supabase.channel('comments')
+  .on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'comments' },
+    (payload) => {
+      console.log('Change received!', payload)
+      let newObj = payload.new
+      newObj.replies = new Array()
+      comments.push(newObj)
+    }
+  )
+  .subscribe()
 
 
-const replyChannels = supabase.channel('custom-all-channel')
+const replyChannels = supabase.channel('replies')
     .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'replies' },
