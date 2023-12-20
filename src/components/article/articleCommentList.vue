@@ -31,6 +31,7 @@ async function getComments() {
             for (var i of res.data) {
                 comments.push(i)
             }
+            isLoading.value = false
         })
 }
 
@@ -113,7 +114,7 @@ const replyChannels = supabase.channel('custom-all-channel')
 
 <template>
     <div>
-        <h5 v-if="comments.length != 0">
+        <h5 v-if="isLoading">
             Comments
             <span>({{ comments.length }})</span>
         </h5>
