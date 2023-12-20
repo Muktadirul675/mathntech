@@ -1,9 +1,13 @@
 <script setup>
+import { useAuthStore } from '@/stores/authStore';
+
 import { supabase } from '@/lib/supabase';
 
 const props = defineProps({
     comment: Object
 })
+
+const authStore = useAuthStore()
 
 async function del() {
     const { error } = await supabase
@@ -16,7 +20,9 @@ async function del() {
 </script>
 
 <template>
-    <div @click="del" style="cursor: pointer;">
-        <i class="fi fi-rr-trash text-danger"></i>
+    <div v-if="authStore.logged">
+        <div v-if="authStore.loggedUser.email == props.comment.email" @click="del" style="cursor: pointer;">
+            <i class="fi fi-rr-trash text-danger"></i>
+        </div>
     </div>
 </template>
