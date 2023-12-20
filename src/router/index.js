@@ -7,12 +7,7 @@ import Article from '@/views/article/Article.vue'
 import ArticleView from '@/views/article/ArticleView.vue'
 
 export const router = createRouter({
-  history: createWebHashHistory(),
-  scrollBehavior(to, from, savedPosition) {
-    // always scroll to top
-    if(savedPosition){return savedPosition}
-    return { el: "#app" }
-  } ,
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -55,7 +50,12 @@ export const router = createRouter({
     //     }
     //   ]
     // }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    if (savedPosition) { return savedPosition }
+    return { el: "#app" }
+  },
 })
 
 

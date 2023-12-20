@@ -53,8 +53,10 @@ let canEdit = computed(() => {
                 <span class="ms-2">
                     {{ reply.reply }}
                 </span> <br>
-                <EditReply v-if="authStore.loggedUser.email == reply.email" :reply="reply"></EditReply>
-                <RouterLink :to="{name:'article',params:{id:164}}">article 164</RouterLink>
+                <span v-if="authStore.logged">
+                    <EditReply v-if="authStore.loggedUser.email == reply.email" :reply="reply"></EditReply>
+                </span>
+                <!-- <RouterLink :to="{name:'article',params:{id:164}}">article 164</RouterLink> -->
             </div>
         </div>
         <!-- <div class="ps-4">
