@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { supabase } from '@/lib/supabase';
 
 const props = defineProps({
-    comment: Object
+    reply: Object
 })
 
 const authStore = useAuthStore()
@@ -13,9 +13,9 @@ const isDeleting = ref(false)
 async function del() {
     isDeleting.value = true
     const { error } = await supabase
-        .from('comments')
+        .from('replies')
         .delete()
-        .eq('id', props.comment.id)
+        .eq('id', props.reply.id)
     if (error) { console.log('error ', error) }else{isDeleting.value=false}
 }
 
@@ -29,7 +29,7 @@ async function del() {
             </div>
         </div>
         <div v-else>
-            <div v-if="authStore.loggedUser.email == props.comment.email" @click="del" style="cursor: pointer;">
+            <div v-if="authStore.loggedUser.email == props.reply.email" @click="del" style="cursor: pointer;">
                 <i class="fi fi-rr-trash text-danger"></i>
             </div>
         </div>

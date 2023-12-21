@@ -13,14 +13,14 @@ let comments = reactive([])
 const isLoading = ref(true)
 const wriittenComment = ref('')
 const isAdding = ref(false)
-let count = computed(()=>{
-    if(comments){
+let count = computed(() => {
+    if (comments) {
         let total = 0;
-        for(var i of comments){
-            if(!(i.deleted)){total++}
+        for (var i of comments) {
+            if (!(i.deleted)) { total++ }
         }
         return total;
-    }else{return 0}
+    } else { return 0 }
 })
 
 onMounted(() => {
@@ -37,11 +37,18 @@ async function getComments() {
         .select('*, replies(*)')
         .eq('article', props.article.id)
         .then((res) => {
-            for (var i of res.data) {
-                i.deleted = false
-                comments.push(i)
-            }
-            isLoading.value = false
+            if (res.data) {
+                for (var i of res.data) {
+                    i.deleted = false
+                    if (i.replies) {
+                        for (var j in i.replies) {
+                            i.replies[j].deleted = false
+                        }
+                    }
+                    comments.push(i)
+                }
+                isLoading.value = false
+            } else { return null }
         })
 }
 
@@ -142,6 +149,17 @@ const replyChannels = supabase.channel('replies')
                     }
                 }
             }
+            if (payload.eventType == 'DELETE') {
+                for (var i = 0; i < comments.length; i++) {
+                    for (var j = 0; j < comments[i].replies.length; j++) {
+                        if (comments[i].replies[j].id == payload.old.id) {
+                            comments[i].replies[j].deleted = true
+                            break
+                        }
+                    }
+                    break
+                }
+            }
         }
     )
     .subscribe()
@@ -156,7 +174,7 @@ const replyChannels = supabase.channel('replies')
         <div v-else class="commentsList">
             <h5 v-if="count">Comments ({{ count }})</h5>
             <h5 v-else>Share your thoughts...</h5>
-            <ArticleComment v-for="comment in comments" v-show="!comment.deleted"  :comment="comment"></ArticleComment>
+            <ArticleComment v-for="comment in comments" v-show="!comment.deleted" :comment="comment"></ArticleComment>
             <div class="form my-2">
                 <form class="form-group addComment" @submit="addComment">
                     <textarea v-model="wriittenComment" id="commentBox" type="text" class="form-control"

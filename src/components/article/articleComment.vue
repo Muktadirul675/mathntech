@@ -7,6 +7,7 @@ import EditComment from './editComment.vue';
 import CommentReplySign from './CommentReplySign.vue';
 import EditReply from './EditReply.vue';
 import DeleteComment from './DeleteComment.vue';
+import DeleteReply from './DeleteReply.vue';
 
 const props = defineProps({
     comment: Object
@@ -47,15 +48,21 @@ let canEdit = computed(() => {
         </div>
         <div v-if="comment.replies" class="repliesList ps-4 mb-2">
             <div v-for="reply in comment.replies" class="reply">
-                <h6>
-                    {{ reply.name }}
-                </h6>
-                <span class="ms-2">
-                    {{ reply.reply }}
-                </span> <br>
-                <span v-if="authStore.logged">
-                    <EditReply v-if="authStore.loggedUser.email == reply.email" :reply="reply"></EditReply>
-                </span>
+                <div v-if="!reply.deleted">
+                    <h6>
+                        {{ reply.name }}
+                    </h6>
+                    <span class="ms-2">
+                        {{ reply.reply }}
+                    </span> <br>
+                    <span v-if="authStore.logged">
+                        <div style="display: flex;" v-if="authStore.loggedUser.email == reply.email">
+                            <EditReply  :reply="reply"></EditReply>
+                            <span class="mx-2"></span>
+                            <DeleteReply :reply="reply"></DeleteReply>
+                        </div>
+                    </span>
+                </div>
                 <!-- <RouterLink :to="{name:'article',params:{id:164}}">article 164</RouterLink> -->
             </div>
         </div>
