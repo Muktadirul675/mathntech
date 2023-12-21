@@ -33,21 +33,21 @@ let canEdit = computed(() => {
 <template>
     <div :id="`${commentId}`" class="comment my-2">
         <div class="header" style="display: flex; align-items: center;">
-            <h5 class="name">{{ comment.name }}</h5>
+            <h5 class="name">{{ props.comment.name }}</h5>
             <!-- <span class="mx-1 text-muted time">{{ new Date(comment.created_at).toDateString() }}</span> -->
         </div>
         <div class="content ps-2">
-            {{ comment.comment }}
+            {{ props.comment.comment }}
         </div>
         <div class="tools" :id="`${commentId}-tools`">
-            <EditComment v-if="canEdit" :comment="comment"></EditComment>
+            <EditComment v-if="canEdit" :comment="props.comment"></EditComment>
             <span class="mx-2"></span>
-            <CommentReplySign :comment="comment"></CommentReplySign>
+            <CommentReplySign :comment="props.comment"></CommentReplySign>
             <span class="mx-2"></span>
-            <DeleteComment :comment="comment"></DeleteComment>
+            <DeleteComment :comment="props.comment"></DeleteComment>
         </div>
-        <div v-if="comment.replies" class="repliesList ps-4 mb-2">
-            <div v-for="reply in comment.replies" class="reply">
+        <div v-if="props.comment.replies" class="repliesList ps-4 mb-2">
+            <div v-for="reply in props.comment.replies" class="reply">
                 <div v-if="!reply.deleted">
                     <h6>
                         {{ reply.name }}

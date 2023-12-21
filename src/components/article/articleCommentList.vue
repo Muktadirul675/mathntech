@@ -138,8 +138,10 @@ const replyChannels = supabase.channel('replies')
             }
             if (payload.eventType == 'UPDATE') {
                 for (var i = 0; i < comments.length; i++) {
+                    console.log('i ',i)
                     if (comments[i].id == payload.new.comment) {
                         for (var j = 0; j < comments[i].replies.length; j++) {
+                            console.log('j ',j)
                             if (comments[i].replies[j].id == payload.new.id) {
                                 comments[i].replies[j].reply = payload.new.reply
                                 break
@@ -150,14 +152,15 @@ const replyChannels = supabase.channel('replies')
                 }
             }
             if (payload.eventType == 'DELETE') {
-                for (var i = 0; i < comments.length; i++) {
-                    for (var j = 0; j < comments[i].replies.length; j++) {
-                        if (comments[i].replies[j].id == payload.old.id) {
+                for(var i in comments){
+                    console.log('i ',i);
+                    for(var j in comments[i].replies){
+                        console.log('j ',j);
+                        if(comments[i].replies[j].id==payload.old.id){
                             comments[i].replies[j].deleted = true
                             break
                         }
                     }
-                    break
                 }
             }
         }
