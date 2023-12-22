@@ -3,7 +3,8 @@ import ArticleImage from './ArticleImage.vue';
 import Tags from './Tags.vue';
 
 let props = defineProps({
-    article: Object
+    article: Object,
+    type:String
 })
 let article = props.article;
 
@@ -12,11 +13,12 @@ let article = props.article;
 <template>
     <div class="articleCard p-3 shadow-sm">
         <ArticleImage :article="article" type="hArticle"></ArticleImage>
-        <div class="p-1 mx-1">
+        <div style="position: relative;" class="p-1 mx-1">
             <h6>
-                <RouterLink :to="{name:'article',params:{id:article.id}}">{{ article.title }}</RouterLink> 
+                <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}">{{ article.title }}</RouterLink> 
+                <RouterLink v-if="props.type == 'series'" :to="{name:'series',params:{id:article.id}}">{{ article.title }}</RouterLink> 
             </h6>
-            <Tags :article="article"></Tags>
+            <Tags style="position: absolute;bottom:0;width: 100%;" :article="article"></Tags>
         </div>
     </div>
 </template>

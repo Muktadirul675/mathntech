@@ -2,7 +2,8 @@
 import VerticalArticleCard from '../article/VerticalArticleCard.vue';
 
 let props = defineProps({
-    article: Object
+    article: Object,
+    type: String
 })
 let article = props.article;
 
@@ -10,6 +11,6 @@ let article = props.article;
 
 <template>
     <div >
-        <VerticalArticleCard :article="article"></VerticalArticleCard>
+        <VerticalArticleCard :type="type" :article="article"></VerticalArticleCard>
     </div>
 </template>

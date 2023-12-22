@@ -1,30 +1,33 @@
 <script setup>
-import { ref, computed } from '@vue/reactivity';
-import { useArticleStore } from '@/stores/articleStore';
 import Loading from '@/components/Loading.vue';
-import Content from '@/components/blog/Content.vue'
+import { useSeriesStore } from '@/stores/seriesStore';
+import { ref, computed } from 'vue';
+import Content from '@/components/blog/Content.vue';
 
-const articleStore = useArticleStore()
+const seriesStore = useSeriesStore()
 const searchTxt = ref('')
-
-const articles = computed(() => {
-    if (searchTxt.value == '') { return articleStore.publicArticles }
-    else {
-        return articleStore.publicArticles.filter(
-            ({ title, type, tags }) => [title, type, tags]
-                .some(val => val.toLowerCase().includes(searchTxt.value.toLowerCase()))
-        )
+const serieses = computed(()=>{
+    if(seriesStore.isLoading){
+        return null
+    }else{
+        return seriesStore.series
     }
 })
 
-function onSubmit(event) {
+const isLoading = computed(()=>{
+    if(serieses.value === null){return true;}
+    else{return false}
+})
+
+function onSubmit(event){
     event.preventDefault()
 }
 
 </script>
 
+
 <template>
-    <Loading v-if="articleStore.loading"></Loading>
+    <Loading v-if="seriesStore.loading"></Loading>
     <div v-else>
         <div class="container">
             <div class="row justify-content-center">
@@ -35,12 +38,12 @@ function onSubmit(event) {
                                 aria-expanded="false"><i class="fi fi-rr-settings-sliders"></i></button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <RouterLink :to="{name:'blog'}" class="dropdown-item">
+                                    <RouterLink :to="{ name: 'blog' }" class="dropdown-item">
                                         Articles
                                     </RouterLink>
                                 </li>
                                 <li>
-                                    <RouterLink :to="{name:'seriesBlog'}" class="dropdown-item">
+                                    <RouterLink :to="{ name: 'seriesBlog' }" class="dropdown-item">
                                         Series
                                     </RouterLink>
                                 </li>
@@ -55,8 +58,8 @@ function onSubmit(event) {
                 </div>
             </div>
             <div class="row">
-                <div v-for="article in articles" class="col-12 col-lg-3 col-xl-3">
-                    <Content type="article" :article="article"></Content>
+                <div v-for="series in serieses" class="col-12 col-lg-3 col-xl-3">
+                    <Content type="series" :article="series"></Content>
                 </div>
             </div>
         </div>

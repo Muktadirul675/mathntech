@@ -5,6 +5,10 @@ import AddArticleView from '../views/article/AddArticle.vue'
 import UpdateArticle from '../views/article/UpdateArticle.vue'
 import Article from '@/views/article/Article.vue'
 import ArticleView from '@/views/article/ArticleView.vue'
+import AddSeries from '@/views/series/AddSeries.vue'
+import SeriesBlog from '@/views/series/SeriesBlog.vue'
+import SeriesView from '@/views/series/SeriesView.vue';
+import { supabase } from '@/lib/supabase'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,20 +24,44 @@ export const router = createRouter({
       component: BlogView
     },
     {
+      path: '/blog/serieses',
+      name: 'seriesBlog',
+      component: SeriesBlog,
+    },
+    {
       path: '/articles/add',
       name: 'addArticle',
-      component: AddArticleView
+      component: AddArticleView,
+      meta: {
+        admin: true
+      },
     },
     {
       path: '/article/update/:id',
       name: 'updateArticle',
-      component: UpdateArticle
+      component: UpdateArticle,
+      meta: {
+        admin: true
+      },
     },
     {
       path: '/article/:id',
       component: Article,
       name: 'article'
     },
+    {
+      path: '/series/add',
+      name: 'addSeries',
+      component: AddSeries,
+      meta: {
+        admin: true
+      },
+    },
+    {
+      path: '/series/:id',
+      name: 'series',
+      component: SeriesView,
+    }
     // {
     //   path: '/article',
     //   component: ArticleView,
@@ -57,6 +85,16 @@ export const router = createRouter({
     return { el: "#app" }
   },
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.admin && (to.name == 'addArticle' || to.name == 'updateArticle' || to.name == 'addSeries')) {
+//     const user = supabase.auth.getUser()
+//     if (user) {
+//       if (user.user_metadata.email == 'muktadirul.05@gmail.com') { next() }
+//       else { next('/') }
+//     } else { next('/') }
+//   } else { next() }
+// });
 
 
 // scrollBehavior(to, from, savedPosition) {

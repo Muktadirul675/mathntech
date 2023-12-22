@@ -138,10 +138,10 @@ const replyChannels = supabase.channel('replies')
             }
             if (payload.eventType == 'UPDATE') {
                 for (var i = 0; i < comments.length; i++) {
-                    console.log('i ',i)
+                    // console.log('i ',i)
                     if (comments[i].id == payload.new.comment) {
                         for (var j = 0; j < comments[i].replies.length; j++) {
-                            console.log('j ',j)
+                            // console.log('j ',j)
                             if (comments[i].replies[j].id == payload.new.id) {
                                 comments[i].replies[j].reply = payload.new.reply
                                 break

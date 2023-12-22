@@ -5,7 +5,8 @@ import BookmarkSign from './BookmarkSign.vue';
 import { RouterLink } from 'vue-router';
 
 let props = defineProps({
-    article: Object
+    article: Object,
+    type: String
 })
 let article = props.article;
 
@@ -26,12 +27,11 @@ function truncate(value, length) {
         </div> <br>
         <div class="heading">
             <h6> 
-                <RouterLink :to="{name:'article',params:{id:article.id}}" v-html="article.title">
+                <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>
-            </h6> 
-            <div style="font-size: small;" class="text-muted">
-                {{ truncate(article.body, 100) }}
-            </div>
+                <RouterLink v-if="props.type == 'series'" :to="{name:'series',params:{id:article.id}}" v-html="article.title">
+                </RouterLink>
+            </h6>
             <span class="subject bg-warning text-white px-2 py-1" style="border-radius: 30px; font-size: smaller;">{{
                 article.subject }}</span>
             <div class="row">
