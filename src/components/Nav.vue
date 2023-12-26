@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { RouterLink } from 'vue-router';
-import { supabase } from '@/lib/supabase';
-import { useAuthStore } from "@/stores/authStore"
+import { useAuthStore } from "@/stores/authStore.js";
 
 let authStore = useAuthStore()
 

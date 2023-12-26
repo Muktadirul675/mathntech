@@ -1,9 +1,9 @@
 <script setup>
-import { useSeriesStore } from '@/stores/seriesStore';
+import { useSeriesStore } from '@/stores/seriesStore.js';
 import { ref, computed } from 'vue';
 import Loading from '@/components/Loading.vue';
 import { useRoute } from 'vue-router';
-import { useArticleStore } from '@/stores/articleStore';
+import { useArticleStore } from '@/stores/articleStore.js';
 import HorizontalArticleCard from '@/components/article/HorizontalArticleCard.vue';
 import Tags from '@/components/article/Tags.vue';
 

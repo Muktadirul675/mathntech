@@ -1,5 +1,6 @@
 <script setup>
 import VerticalArticleCard from '../article/VerticalArticleCard.vue';
+import PostCard from '../article/PostCard.vue';
 
 let props = defineProps({
     article: Object,
@@ -11,6 +12,11 @@ let article = props.article;
 
 <template>
     <div >
-        <VerticalArticleCard :type="type" :article="article"></VerticalArticleCard>
+        <div v-if="type == 'post'">
+            <PostCard :article="article"></PostCard>
+        </div>
+        <div v-else>
+            <VerticalArticleCard :type="type" :article="article"></VerticalArticleCard>
+        </div>
     </div>
 </template>

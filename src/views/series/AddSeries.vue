@@ -1,15 +1,24 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { supabase } from '@/lib/supabase';
-import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/seriesTitleConfig';
-import { ClassicEditor as BodyEditor } from '@/lib/ckeditor/seriesBodyConfig';
+import { onMounted, ref, onBeforeMount } from 'vue';
+import { supabase } from '@/lib/supabase.js';
+import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/seriesTitleConfig.js';
+import { ClassicEditor as BodyEditor } from '@/lib/ckeditor/seriesBodyConfig.js';
+import { useAuthStore } from '@/stores/authStore.js';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
+const authStore = useAuthStore()
 const simpleEditor = ref(null)
 const bodyEditor = ref(null)
 const coverImg = ref('')
 const articleIds = ref('')
 const tags = ref('')
 const isLoading = ref(false)
+
+onBeforeMount(()=>{
+    if(!(authStore.logged)){router.push({name:'home'})}
+    else{if(!(authStore.isAdmin)){router.push({name:'home'})}}
+})
 
 onMounted(() => {
     SimpleEditor.create(document.querySelector("#simpleEditor")).then(editor => {

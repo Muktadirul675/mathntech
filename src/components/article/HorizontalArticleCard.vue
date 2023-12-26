@@ -15,10 +15,9 @@ let article = props.article;
         <ArticleImage :article="article" type="hArticle"></ArticleImage>
         <div style="position: relative;" class="p-1 mx-1">
             <h6>
-                <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}">{{ article.title }}</RouterLink> 
-                <RouterLink v-if="props.type == 'series'" :to="{name:'series',params:{id:article.id}}">{{ article.title }}</RouterLink> 
+                <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}" v-html="article.title"></RouterLink>
             </h6>
-            <Tags style="position: absolute;bottom:0;width: 100%;" :article="article"></Tags>
+            <Tags :article="article"></Tags>
         </div>
     </div>
 </template>

@@ -21,6 +21,7 @@ function truncate(value, length) {
 </script>
 
 <template>
+    <!-- col-12 col-lg-3 col-xl-3 -->
     <div class="articleCard p-3 shadow-sm my-1">
         <div class="image">
             <ArticleImage :article="article" type="vArticle"></ArticleImage>

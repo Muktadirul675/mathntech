@@ -1,7 +1,7 @@
 <script setup>
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore.js';
 import { ref } from 'vue';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase.js';
 
 const props = defineProps({
     reply: Object

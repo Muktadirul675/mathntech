@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { supabase } from '@/lib/supabase'
+import { ref } from 'vue';
+import { supabase } from '@/lib/supabase.js'
 
 const props = defineProps({
     comment: Object

@@ -1,8 +1,6 @@
 <script setup>
-import { supabase } from '@/lib/supabase';
-import { RouterLink } from 'vue-router';
-import { useAuthStore } from '@/stores/authStore';
-import { computed, onMounted, ref } from 'vue';
+import { useAuthStore } from '@/stores/authStore.js';
+import { computed } from 'vue';
 import EditComment from './editComment.vue';
 import CommentReplySign from './CommentReplySign.vue';
 import EditReply from './EditReply.vue';

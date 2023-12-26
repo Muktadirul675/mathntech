@@ -1,14 +1,14 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import BlogView from '../views/BlogView.vue'
 import AddArticleView from '../views/article/AddArticle.vue'
 import UpdateArticle from '../views/article/UpdateArticle.vue'
 import Article from '@/views/article/Article.vue'
-import ArticleView from '@/views/article/ArticleView.vue'
 import AddSeries from '@/views/series/AddSeries.vue'
 import SeriesBlog from '@/views/series/SeriesBlog.vue'
 import SeriesView from '@/views/series/SeriesView.vue';
-import { supabase } from '@/lib/supabase'
+import PostBlog from '@/views/post/PostBlog.vue';
+import Post from '@/views/post/Post.vue';
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +61,16 @@ export const router = createRouter({
       path: '/series/:id',
       name: 'series',
       component: SeriesView,
+    },
+    {
+      path:'/blog/posts',
+      name:'postBlog',
+      component: PostBlog,
+    },
+    {
+      path: '/post/:id',
+      name:'post',
+      component: Post,
     }
     // {
     //   path: '/article',

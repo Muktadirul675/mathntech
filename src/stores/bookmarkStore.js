@@ -1,61 +1,79 @@
-import { ref, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { supabase } from '@/lib/supabase';
-import { useAuthStore } from './authStore';
+import { supabase } from '@/lib/supabase.js';
+import { useAuthStore } from './authStore.js';
+import { useArticleStore } from './articleStore.js';
 
 export const useBookmarkStore = defineStore('bookmarks', () => {
-    let authStore = useAuthStore()
-    authStore.checkUser()
-    let bookmarks = ref(null)
-    let userBookmarks = ref(null)
+    const articleStore = useArticleStore()
+    let bookmarks = reactive([])
+    let isLoading = ref(true)
+    const authStore = useAuthStore()
 
     async function getBookmarks() {
         if (authStore.logged) {
-            let { data: sbBookmarks, error } = await supabase
-                .from('bookmarks')
-                .select(`id,articles(id,title,subject)`)
-
-            if (sbBookmarks) { bookmarks.value = sbBookmarks; }
-        } else { bookmarks.value = null }
-    }
-
-    async function getUserBookmarks() {
-        if (authStore.logged) {
-            let { data: sbBookmarks, error } = await supabase
-                .from('bookmarks')
-                .select(`*,articles(id,title,subject,type)`)
-                .eq('email', authStore.loggedUser.email)
-
-            if (sbBookmarks) { userBookmarks.value = sbBookmarks; }
-        } else { userBookmarks.value = null }
-    }
-
-    getBookmarks()
-    getUserBookmarks()
-
-    async function addBookmark(articleId) {
-        const { error } = await supabase
-            .from('bookmarks')
-            .insert([{
-                article: articleId,
-                email: authStore.loggedUser.email
-            }])
-        if (error) { console.log('error ', error) }
-        getUserBookmarks()
-    }
-
-    async function deleteBookmark(id) {
-        const { error } = await supabase
-            .from('bookmarks')
-            .delete()
-            .eq('id', id)
-        if (error) { console.log('error ', error) } else {
-            userBookmarks.value = userBookmarks.value.filter((obj) => {
-                    return obj.id != id
+            if (authStore.loggedUser) {
+                const { data, error } = await supabase.from('bookmarks').select('*, article(*)').eq('email', authStore.loggedUser.email)
+                if (error) { console.log('error ', error) } else {
+                    console.log(data)
+                    if (data.length) {
+                        for (var i of data) {
+                            i.deleted = false
+                            bookmarks.push(i)
+                        }
+                    }
+                    isLoading.value = false
                 }
-            )
+            } else { isLoading.value = true }
+        } else {
+            isLoading.value = false
+        }
+    }
+    getBookmarks()
+
+    async function add(article) {
+        if (authStore.logged) {
+            if (authStore.loggedUser) {
+                const { error } = await supabase.from('bookmarks').insert({
+                    article: article.id,
+                    email: authStore.loggedUser.email,
+                    type: 'article'
+                })
+            }
+        } else {
+            toast.error('Please login to add bookmark', { position: toast.POSITION.TOP_RIGHT })
         }
     }
 
-    return { bookmarks, userBookmarks, deleteBookmark, addBookmark }
+    async function del(bookmark) {
+        const { error } = await supabase.from('bookmarks').delete().eq('id', bookmark.id)
+        if (error) {
+            console.log('error ', error)
+        }
+    }
+
+    const channels = supabase.channel('custom-all-channel')
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'bookmarks' },
+            (payload) => {
+                console.log('Change received!', payload)
+                if (payload.eventType == "INSERT") {
+                    let article = articleStore.getArticle(payload.new.article)
+                    let obj = payload.new
+                    obj.article = article
+                    obj.deleted = false
+                    bookmarks.push(obj)
+                }
+                if (payload.eventType == "DELETE") {
+                    let id = payload.old.id
+                    for(var i in bookmarks){
+                        if(bookmarks[i].id == id){bookmarks[i].deleted = true}
+                    }
+                }
+            }
+        )
+        .subscribe()
+
+    return { bookmarks, isLoading, add, del }
 })

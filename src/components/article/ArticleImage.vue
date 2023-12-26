@@ -21,7 +21,7 @@ let type = props.type;
 <style scoped>
 .vArticleImg img{
     width: 100%;
-    height: 200px;
+    height: calc(100% * (9/16));
 }
 .hArticleImg img{
     width: 160px;

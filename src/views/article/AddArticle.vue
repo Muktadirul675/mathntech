@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig';
-import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig';
-import { supabase } from '@/lib/supabase';
+import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig.js';
+import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig.js';
+import { supabase } from '@/lib/supabase.js';
 
 let titleEditor = ref(null);
 let bodyEditor = ref(null);

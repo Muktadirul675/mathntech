@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { supabase } from '@/lib/supabase';
-import { useAuthStore } from '@/stores/authStore';
+import { supabase } from '@/lib/supabase.js';
+import { useAuthStore } from '@/stores/authStore.js';
 import { toast } from 'vue3-toastify'
 
 const props = defineProps({

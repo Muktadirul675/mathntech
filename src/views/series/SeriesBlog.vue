@@ -1,25 +1,27 @@
 <script setup>
 import Loading from '@/components/Loading.vue';
-import { useSeriesStore } from '@/stores/seriesStore';
-import { ref, computed } from 'vue';
+import { useSeriesStore } from '@/stores/seriesStore.js';
+import { ref, watch, reactive } from 'vue';
 import Content from '@/components/blog/Content.vue';
 
 const seriesStore = useSeriesStore()
 const searchTxt = ref('')
-const serieses = computed(()=>{
-    if(seriesStore.isLoading){
-        return null
-    }else{
-        return seriesStore.series
+const serieses = reactive(seriesStore.series)
+
+watch(searchTxt, (newVal, oldVal) => {
+    if (searchTxt.value == '') {
+        for (var i in serieses) {
+            serieses[i].show = true
+        }
+    } else {
+        for (var i in serieses) {
+            if (serieses[i].title.toLowerCase().includes(searchTxt.value.toLowerCase())) { serieses[i].show = true }
+            else { serieses[i].show = false }
+        }
     }
 })
 
-const isLoading = computed(()=>{
-    if(serieses.value === null){return true;}
-    else{return false}
-})
-
-function onSubmit(event){
+function onSubmit(event) {
     event.preventDefault()
 }
 
@@ -27,7 +29,7 @@ function onSubmit(event){
 
 
 <template>
-    <Loading v-if="seriesStore.loading"></Loading>
+    <Loading v-if="seriesStore.isLoading"></Loading>
     <div v-else>
         <div class="container">
             <div class="row justify-content-center">
@@ -47,6 +49,11 @@ function onSubmit(event){
                                         Series
                                     </RouterLink>
                                 </li>
+                                <li>
+                                    <RouterLink :to="{ name: 'postBlog' }" class="dropdown-item">
+                                        Posts
+                                    </RouterLink>
+                                </li>
                             </ul>
                             <input type="text" class="form-control" v-model="searchTxt"
                                 aria-label="Text input with dropdown button">
@@ -58,9 +65,11 @@ function onSubmit(event){
                 </div>
             </div>
             <div class="row">
-                <div v-for="series in serieses" class="col-12 col-lg-3 col-xl-3">
-                    <Content type="series" :article="series"></Content>
-                </div>
+                <template v-for="series in serieses">
+                    <div v-if="series.show" class="col-12 col-lg-3 col-xl-3">
+                        <Content type="series" :article="series"></Content>
+                    </div>
+                </template>
             </div>
         </div>
     </div>

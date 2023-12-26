@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig';
-import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig';
-import { supabase } from '@/lib/supabase';
+import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig.js';
+import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig.js';
+import { supabase } from '@/lib/supabase.js';
 import { toast } from 'vue3-toastify';
 
 // Force dismiss specific toast

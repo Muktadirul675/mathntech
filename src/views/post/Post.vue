@@ -2,13 +2,13 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore.js';
-import { useArticleStore } from '@/stores/articleStore.js';
+import { usePostStore } from '@/stores/postStore.js';
 import ArticleCommentList from '@/components/article/articleCommentList.vue';
 import Loading from '@/components/Loading.vue';
 import BookmarkSign from '@/components/article/BookmarkSign.vue';
 import Tags from '@/components/article/Tags.vue';
 
-const articleStore = useArticleStore()
+const articleStore = usePostStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const id = route.params.id;
@@ -87,7 +87,7 @@ const article = computed(() => {
     align-items: center;
     justify-content: center;
     padding-top: 50px;
-    height: 100vh;
+    max-height: 100vh;
     position: sticky;
     top: 0;
 }

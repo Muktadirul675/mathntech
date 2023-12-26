@@ -1,79 +1,42 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { supabase } from '@/lib/supabase';
-import { useBookmarkStore } from '@/stores/bookmarkStore.js'
-import BookmarksItem from './BookmarksItem.vue';
-import { useAuthStore } from '@/stores/authStore';
-import { useArticleStore } from '@/stores/articleStore';
+import { computed } from 'vue';
+import { useBookmarkStore } from '@/stores/bookmarkStore.js';
+import { useAuthStore } from '@/stores/authStore.js';
+import { useArticleStore } from '@/stores/articleStore.js';
+import HorizontalArticleCard from '../article/HorizontalArticleCard.vue';
+import { useRouter } from 'vue-router';
 
+let router = useRouter()
 let authStore = useAuthStore()
 let articleStore = useArticleStore()
-let bookmarksStore = useBookmarkStore();
-let bookmarks = computed(() => bookmarksStore.userBookmarks)
-
-// const channels = supabase.channel('custom-all-channel')
-//     .on(
-//         'postgres_changes',
-//         { event: '*', schema: 'public', table: 'bookmarks' },
-//         (payload) => {
-//             console.log('Change received!', payload)
-//             if (authStore.logged) {
-//                 if (authStore.loggedUser.email == payload.new.email) {
-//                     if (payload.eventType == 'INSERT') {
-//                         let newList = bookmarksStore.userBookmarks
-//                         let newBookmark = payload.new
-//                         newBookmark.articles = articleStore.getArticle(newBookmark.article)
-//                         newList.push(newBookmark)
-//                         console.log(newBookmark)
-//                         bookmarksStore.userBookmarks = newList
-//                     }
-//                 }
-//             }
-//         }
-//     )
-//     .subscribe()
+let bookmarkStore = useBookmarkStore();
+let isLoading = computed(()=>bookmarkStore.isLoading)
+let bookmarks = computed(()=>{
+    if(isLoading.value){return null}
+    else{
+        let list = bookmarkStore.bookmarks
+        return list
+    }
+})
 
 </script>
 
 <template>
-    <div class="container-fluid bookmarks mt-3 rounded shadow p-3">
-        <div class="row"> <br>
-            <img class="bookmarkImg"
-                src="https://res.cloudinary.com/dsfybjdih/image/upload/v1702632273/mathntech/book_slue10.png" alt="">
-            Bookmarks
-        </div>
-        <div class="row">
-            <div class="list">
-                <div v-if="bookmarks == null" class="spinner-border text-warning" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <div v-else>
-                    <div v-if="bookmarks.length == 0">
-                        No bookmarks
-                    </div>
-                    <div v-else>
-                        <div v-for="bm in bookmarks">
-                            <BookmarksItem :article="bm"></BookmarksItem>
-                        </div>
-                    </div> 
-                </div>
+    <div>
+        <div class="p-3 rounded shadow-sm my-2" v-if="bookmarks">
+            <h3>Bookmarks</h3>
+            <div v-for="bookmark in bookmarks">
+                <a style="display:inline-block" data-bs-dismiss="offcanvas"
+                        aria-label="Close" @click="router.push({name:'article',params:{id:bookmark.article.id}})">
+                    <HorizontalArticleCard v-if="!(bookmark.deleted)" type="article" :article="bookmark.article"></HorizontalArticleCard>
+                </a>
             </div>
+        </div>
+        <div v-else>
+            No bookmarks
         </div>
     </div>
 </template>
 
 <style scoped>
-.bookmarks .bookmarkImg {
-    width: 50px;
-    height: 30px;
-    margin-right: 5px;
-}
-
-.list ol {
-    padding: 0;
-}
-
-.list ol li {
-    list-style: none;
-}
 </style>

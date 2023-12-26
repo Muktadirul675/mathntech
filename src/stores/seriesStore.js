@@ -1,16 +1,18 @@
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase.js';
 
 export const useSeriesStore = defineStore('series', () => {
-    const series = ref(null)
+    const series = reactive([])
     const isLoading = ref(true)
 
     async function getSeries() {
         const { data, error } = await supabase.from('series').select('*')
         if (error) { console.log('error ', error) } else {
-            series.value = data
-            console.log(series.value)
+            data.forEach((i)=>{
+                i.show = true
+                series.push(i)
+            })
             isLoading.value = false
         }
     }
@@ -18,7 +20,7 @@ export const useSeriesStore = defineStore('series', () => {
     getSeries()
 
     function getSeriesWithId(id) {
-        for(var i of series.value){
+        for(var i of series){
             if(i.id == id){
                 return i
             }

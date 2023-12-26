@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { supabase } from '@/lib/supabase';
-import { useBookmarkStore } from '@/stores/bookmarkStore';
+import { useBookmarkStore } from '@/stores/bookmarkStore.js';
 
 const props = defineProps({
     article: Object
@@ -11,7 +10,6 @@ const props = defineProps({
 let article = props.article
 let bookmarkStore = useBookmarkStore()
 let deleting = ref(false)
-let deleted = ref(false)
 let router = useRouter()
 
 async function del() {

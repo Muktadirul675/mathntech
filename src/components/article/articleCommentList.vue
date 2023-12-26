@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, reactive, onMounted } from 'vue';
-import { supabase } from '@/lib/supabase';
-import { useAuthStore } from '@/stores/authStore';
+import { supabase } from '@/lib/supabase.js';
+import { useAuthStore } from '@/stores/authStore.js';
 import ArticleComment from './articleComment.vue';
 import { toast } from 'vue3-toastify';
 
