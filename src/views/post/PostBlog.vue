@@ -10,11 +10,11 @@ const posts = reactive(postStore.articles)
 
 watch(searchTxt, (newVal, oldVal) => {
     if (searchTxt.value == '') {
-        for (var i in articles) {
-            post[i].show = true
+        for (var i in posts) {
+            posts[i].show = true
         }
     } else {
-        for (var i in articles) {
+        for (var i in posts) {
             if (posts[i].title.toLowerCase().includes(searchTxt.value.toLowerCase())) { posts[i].show = true }
             else { posts[i].show = false }
         }

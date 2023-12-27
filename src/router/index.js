@@ -9,6 +9,7 @@ import SeriesBlog from '@/views/series/SeriesBlog.vue'
 import SeriesView from '@/views/series/SeriesView.vue';
 import PostBlog from '@/views/post/PostBlog.vue';
 import Post from '@/views/post/Post.vue';
+import UpdatePost from '@/views/post/UpdatePost.vue'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,6 +72,11 @@ export const router = createRouter({
       path: '/post/:id',
       name:'post',
       component: Post,
+    },
+    {
+      path:'/post/update/:id',
+      name:'updatePost',
+      component: UpdatePost,
     }
     // {
     //   path: '/article',

@@ -28,7 +28,9 @@ let bookmarks = computed(()=>{
             <div v-for="bookmark in bookmarks">
                 <a style="display:inline-block" data-bs-dismiss="offcanvas"
                         aria-label="Close" @click="router.push({name:'article',params:{id:bookmark.article.id}})">
-                    <HorizontalArticleCard v-if="!(bookmark.deleted)" type="article" :article="bookmark.article"></HorizontalArticleCard>
+                        <template v-if="!(bookmark.deleted)">
+                            <HorizontalArticleCard  type="article" :article="bookmark.article"></HorizontalArticleCard>
+                        </template>
                 </a>
             </div>
         </div>

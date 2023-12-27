@@ -1,9 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
+import { useAuthStore } from '@/stores/authStore.js';
 import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig.js';
 import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig.js';
 import { supabase } from '@/lib/supabase.js';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
+let authStore = useAuthStore()
 let titleEditor = ref(null);
 let bodyEditor = ref(null);
 let imgLink = ref(null);
@@ -16,7 +20,7 @@ let status = ref(null);
 async function add() {
     const { error } = await supabase
         .from('articles')
-        .insert({ 
+        .insert({
             title: titleEditor.value.getData(),
             body: bodyEditor.value.getData(),
             coverImg: imgLink.value,
@@ -24,13 +28,18 @@ async function add() {
             subject: subject.value,
             type: type.value,
             status: status.value,
-         }).then(()=>alert('added'))
+        }).then(() => alert('added'))
 
 }
 
 onMounted(() => {
     SimpleEditor.create(document.querySelector("#simpleEditor")).then((editor) => { titleEditor.value = editor })
     ArticleEditor.create(document.querySelector("#articleEditor")).then((editor) => { bodyEditor.value = editor })
+})
+
+onBeforeMount(() => {
+    if(!(authStore.logged)){router.push({name:'home'})}
+    else{if(!(authStore.isAdmin)){router.push({name:'home'})}}
 })
 
 </script>

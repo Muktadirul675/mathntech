@@ -38,11 +38,13 @@ const series = computed(() => {
                     <div v-if="!articleStore.articles" class="spinner-border spinner-border-sm text-warning" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <ol v-else>
-                        <li class="my-1" v-for="articleId in series.articles">
-                            <HorizontalArticleCard type="article" :article="articleStore.getArticle(articleId)"></HorizontalArticleCard>
-                        </li>
-                    </ol>
+                    <template v-else>
+                        <div class="my-1" v-for="articleId in series.articles">
+                            <template v-if="articleStore.getArticle(articleId)">
+                                <HorizontalArticleCard type="article" :article="articleStore.getArticle(articleId)"></HorizontalArticleCard>
+                            </template>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>

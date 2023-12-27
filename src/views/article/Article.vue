@@ -57,9 +57,9 @@ const article = computed(() => {
                         <div class="tool text-warning">
                             <i class="fi fi-rr-share-square"></i>
                         </div>
-                        <div class="tool text-danger">
+                        <!-- <div class="tool text-danger">
                             <i class="fi fi-rr-exclamation"></i>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

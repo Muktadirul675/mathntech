@@ -13,17 +13,35 @@ const replyBoxId = `reply-box-${props.comment.id}`
 const text = ref(null)
 const isLoading = ref(false)
 
+function canAdd(cmnt) {
+    var allow = false
+    var allowedStr = ''
+    if(!(cmnt === null)){
+        for (var i = 0; i < cmnt.length; i++) {
+            if (!(cmnt[i] == ' ')) {
+                allow = true
+                allowedStr = cmnt.substr(i)
+            }
+        }
+    }
+    return { allow, allowedStr }
+}
+
+
 async function add() {
     if (authStore.logged) {
-        isLoading.value = true
-        const { error } = await supabase.from('replies').insert([{
-            comment: props.comment.id,
-            reply: text.value,
-            email: authStore.loggedUser.email,
-            name: authStore.loggedUser.full_name
-        }])
-        if (error) { console.log('error ', error) }
-        else { isLoading.value = false; new bootstrap.Collapse(`#${replyBoxId}`).hide(); text.value = '' }
+        let {allowed, allowedStr} = canAdd(text.value)
+        if(allowed){
+            isLoading.value = true
+            const { error } = await supabase.from('replies').insert([{
+                comment: props.comment.id,
+                reply: text.value,
+                email: authStore.loggedUser.email,
+                name: authStore.loggedUser.full_name
+            }])
+            if (error) { console.log('error ', error) }
+            else { isLoading.value = false; new bootstrap.Collapse(`#${replyBoxId}`).hide(); text.value = '' }
+        }else{toast.error("Reply can't be empty",{position:toast.POSITION.TOP_RIGHT})}
     } else {
         toast.error('Please login to add reply', { position: toast.POSITION.TOP_RIGHT })
     }

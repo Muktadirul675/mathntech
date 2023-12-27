@@ -57,10 +57,12 @@ getComments()
 function canAdd(cmnt) {
     var allow = false
     var allowedStr = ''
-    for (var i = 0; i < cmnt.length; i++) {
-        if (!(cmnt[i] == ' ')) {
-            allow = true
-            allowedStr = cmnt.substr(i)
+    if(!(cmnt === null)){
+        for (var i = 0; i < cmnt.length; i++) {
+            if (!(cmnt[i] == ' ')) {
+                allow = true
+                allowedStr = cmnt.substr(i)
+            }
         }
     }
     return { allow, allowedStr }

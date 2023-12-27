@@ -28,7 +28,7 @@ const article = computed(() => {
             <div class="col-12 col-lg-6 col-xl-6 p-3 article">
                 <img v-if="article.type != 'post'" :src="article.coverImg" class="coverImg" alt=""> <br>
                 <br>
-                <h5 v-html="article.title"></h5>
+                <h3 v-html="article.title"></h3>
                 <span class="text-muted">{{ new Date(article.created_at).toDateString() }}</span> <br>
                 <span style="font: smaller;border-radius: 30px;" class="px-2 py-1 bg-warning text-white">{{ article.subject
                 }}</span>
@@ -47,7 +47,7 @@ const article = computed(() => {
                             <BookmarkSign :article="article"></BookmarkSign>
                         </div>
                         <div v-if="authStore.isAdmin" class="tool ">
-                            <RouterLink :to="{ name: 'updateArticle', params: { id: article.id } }">
+                            <RouterLink :to="{ name: 'updatePost', params: { id: article.id } }">
                                 <i class="fi fi-sr-blog-pencil text-warning"></i>
                             </RouterLink>
                         </div>
@@ -57,9 +57,9 @@ const article = computed(() => {
                         <div class="tool text-warning">
                             <i class="fi fi-rr-share-square"></i>
                         </div>
-                        <div class="tool text-danger">
+                        <!-- <div class="tool text-danger">
                             <i class="fi fi-rr-exclamation"></i>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
