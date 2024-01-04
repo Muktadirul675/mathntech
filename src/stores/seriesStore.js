@@ -7,7 +7,7 @@ export const useSeriesStore = defineStore('series', () => {
     const isLoading = ref(true)
 
     async function getSeries() {
-        const { data, error } = await supabase.from('series').select('*')
+        const { data, error } = await supabase.from('series').select('*').order('created_at',{ascending:false})
         if (error) { console.log('error ', error) } else {
             data.forEach((i)=>{
                 i.show = true

@@ -16,7 +16,7 @@ const isLoading = ref(false)
 function canAdd(cmnt) {
     var allow = false
     var allowedStr = ''
-    if(!(cmnt === null)){
+    if(!(cmnt == null)){
         for (var i = 0; i < cmnt.length; i++) {
             if (!(cmnt[i] == ' ')) {
                 allow = true
@@ -30,7 +30,7 @@ function canAdd(cmnt) {
 
 async function add() {
     if (authStore.logged) {
-        let {allowed, allowedStr} = canAdd(text.value)
+        let allowed = true
         if(allowed){
             isLoading.value = true
             const { error } = await supabase.from('replies').insert([{

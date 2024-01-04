@@ -20,7 +20,7 @@ const article = computed(() => {
 </script>
 
 <template>
-    <div v-if="article === null">
+    <div v-if="!article">
         <Loading></Loading>
     </div>
     <div v-else class="container">

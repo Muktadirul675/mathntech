@@ -17,10 +17,14 @@ const article = computed(() => {
     else { return null }
 })
 
+async function copyUrl(){
+    navigator.clipboard.writeText(window.location.href)
+}
+
 </script>
 
 <template>
-    <div v-if="article === null">
+    <div v-if="!article">
         <Loading></Loading>
     </div>
     <div v-else class="container">
@@ -54,8 +58,8 @@ const article = computed(() => {
                         <div id="commentTool" class="tool text-warning">
                             <i class="fi fi-rr-comments"></i>
                         </div>
-                        <div class="tool text-warning">
-                            <i class="fi fi-rr-share-square"></i>
+                        <div @click="copyUrl" class="tool text-warning">
+                            <i class="fi fi-rr-share"></i>
                         </div>
                         <!-- <div class="tool text-danger">
                             <i class="fi fi-rr-exclamation"></i>

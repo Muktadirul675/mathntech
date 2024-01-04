@@ -15,7 +15,6 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             if (authStore.loggedUser) {
                 const { data, error } = await supabase.from('bookmarks').select('*, article(*)').eq('email', authStore.loggedUser.email)
                 if (error) { console.log('error ', error) } else {
-                    console.log(data)
                     if (data.length) {
                         for (var i of data) {
                             i.deleted = false

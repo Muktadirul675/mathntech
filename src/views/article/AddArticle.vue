@@ -5,6 +5,7 @@ import { ClassicEditor as ArticleEditor } from '@/lib/ckeditor/articleConfig.js'
 import { ClassicEditor as SimpleEditor } from '@/lib/ckeditor/simpleConfig.js';
 import { supabase } from '@/lib/supabase.js';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
 const router = useRouter()
 let authStore = useAuthStore()
@@ -28,7 +29,8 @@ async function add() {
             subject: subject.value,
             type: type.value,
             status: status.value,
-        }).then(() => alert('added'))
+        })
+    if(error){console.log('error ',error)}else{toast.success("Article added",{position:toast.POSITION.TOP_RIGHT})}
 
 }
 
@@ -64,9 +66,9 @@ onBeforeMount(() => {
                     <b>Tags</b>
                     <input type="text" v-model="tagStr" name="" class="form-control" id=""><br> <br>
                     <b>Subject: </b>
-                    <input type="radio" v-model="subject" name="subject" value="math" id=""> Math
+                    <input type="radio" v-model="subject" name="subject" value="Math" id=""> Math
                     <input type="radio" v-model="subject" name="subject" value="Programming" id=""> Programming
-                    <input type="radio" v-model="subject" name="subject" value="math&programming" id=""> Math & Programming
+                    <input type="radio" v-model="subject" name="subject" value="Math & Programming" id=""> Math & Programming
                     <br><br>
                     <b>Status: </b>
                     <input type="radio" v-model="status" value="public" name="status" id=""> Public

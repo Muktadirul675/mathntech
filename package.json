@@ -39,9 +39,11 @@
     "@wiris/mathtype-ckeditor5": "^8.7.2",
     "@wiris/mathtype-tinymce5": "^8.8.0",
     "epic-spinners": "^2.0.0",
+    "nodemailer": "^6.9.7",
     "pinia": "^2.1.7",
     "tinymce": "^6.8.2",
     "vue": "^3.3.10",
+    "vue-content-loader": "^2.0.1",
     "vue-router": "^4.2.5",
     "vue-toast-notification": "^3.1.2",
     "vue3-toastify": "^0.1.14"

@@ -36,6 +36,7 @@ async function getComments() {
         .from('comments')
         .select('*, replies(*)')
         .eq('article', props.article.id)
+        .order('created_at')
         .then((res) => {
             if (res.data) {
                 for (var i of res.data) {
@@ -75,12 +76,13 @@ async function addComment(event) {
         let { allow, allowedStr } = canAdd(c)
         if (allow) {
             isAdding.value = true
-            await supabase.from('comments').insert({
+            const {error} = await supabase.from('comments').insert([{
                 comment: wriittenComment.value,
                 email: authStore.loggedUser.email,
                 name: authStore.loggedUser.full_name,
                 article: props.article.id
-            }).then((res) => { isAdding.value = false; wriittenComment.value = '' })
+            }])
+            if(!(error)){isAdding.value = false; wriittenComment.value = ''}else{console.log(error)}
         } else {
             wriittenComment.value = ''
             toast.error("Comment can't be empty", { position: toast.POSITION.TOP_RIGHT })

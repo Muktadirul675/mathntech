@@ -39,7 +39,7 @@ function truncate(value, length) {
                 <div class="col-11">
                     <Tags :article="article"></Tags>
                 </div>
-                <div class="col-1 p-1">
+                <div v-if="props.type == 'article'" class="col-1 p-1">
                     <BookmarkSign :article="article"></BookmarkSign>
                 </div>
             </div>

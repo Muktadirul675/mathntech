@@ -2,8 +2,10 @@
 import { ref, onBeforeMount } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from "@/stores/authStore.js";
+import { useNotificationStore } from '@/stores/notificationStore.js'
 
 let authStore = useAuthStore()
+let notificationStore = useNotificationStore()
 
 onBeforeMount(async () => {
     authStore.checkUser()
@@ -23,16 +25,26 @@ onBeforeMount(async () => {
                                 alt="" class="logo">
                         </div>
                         <div class="navigation ms-auto">
-                            <RouterLink :to="{name:'home'}" class="mx-1 btn btn-warning">
+                            <RouterLink :to="{ name: 'home' }" class="mx-1 btn btn-warning">
                                 <i class="fi fi-rr-home"></i>
                             </RouterLink>
-                            <RouterLink :to="{name:'blog'}" class="mx-1 btn btn-warning">
+                            <RouterLink :to="{ name: 'blog' }" class="mx-1 btn btn-warning">
                                 <i class="fi fi-br-blog-text"></i>
                             </RouterLink>
                             <button class="btn btn-warning mx-1 text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                <i v-if="authStore.logged" class="fi fi-sr-circle-user"></i>
-                                <i v-else class="fi fi-br-sign-in-alt"></i>
+                                <div class="position-relative" v-if="authStore.logged">
+                                    <i class="fi fi-sr-circle-user"></i>
+                                    <span v-if="notificationStore.unChecked"
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ notificationStore.unChecked }}
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
+
+                                </div>
+                                <div v-else>
+                                    <i class="fi fi-br-sign-in-alt"></i>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -69,4 +81,7 @@ onBeforeMount(async () => {
 
 .navigation a {
     color: white;
-}</style>
+}
+
+
+</style>

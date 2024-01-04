@@ -6,13 +6,7 @@ export const useAuthStore = defineStore('auth', () => {
     const logged = ref(false);
     const loggedUser = ref(null)
     const allUsers = ref(null)
-
-    async function getAllUsers(){
-        const { data: { users }, error } = await supabase.auth.admin.listUsers()
-        allUsers.value = users
-        console.log(users)
-    }
-
+    
     const isAdmin = computed(() => {
         if (logged.value) {
             if (loggedUser.value.email == 'muktadirul.05@gmail.com') { return true; } else { return false; }
