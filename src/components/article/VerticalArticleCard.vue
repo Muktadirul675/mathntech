@@ -22,11 +22,11 @@ function truncate(value, length) {
 
 <template>
     <!-- col-12 col-lg-3 col-xl-3 -->
-    <div class="articleCard p-3 shadow-sm my-1">
+    <div class="articleCard p-0 shadow-sm my-1">
         <div class="image">
             <ArticleImage :article="article" type="vArticle"></ArticleImage>
         </div> <br>
-        <div class="heading">
+        <div class="heading p-3">
             <h6> 
                 <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>

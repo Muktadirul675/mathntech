@@ -16,7 +16,7 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   async function getNotifications() {
     const { data: { user } } = await supabase.auth.getUser()
-    if(user){
+    if (user) {
       const { data, error } = await supabase.from('notifications').select('*').eq('notifyTo', user.user_metadata.email).order('created_at', { ascending: false })
       for (var i of data) { list.push(i) }
     }
@@ -47,11 +47,30 @@ export const useNotificationStore = defineStore('notifications', () => {
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'notifications' },
       (payload) => {
-        console.log("changed recieved",payload.new)
+        // console.log("changed recieved",payload.new)
         if (payload.new.notifyTo == authStore.loggedUser.email) {
-          console.log("changed recieved to you",payload.new)
+          // console.log("changed recieved to you",payload.new)
           list.unshift(payload.new)
         }
+      }
+    )
+    .subscribe()
+
+
+  const channels = supabase.channel('custom-delete-channel')
+    .on(
+      'postgres_changes',
+      { event: 'DELETE', schema: 'public', table: 'notifications' },
+      (payload) => {
+        console.log('Change received!', payload)
+        let index;
+        for(var i in list){
+          if(list[i].id == payload.old.id){
+            index = i;
+            break;
+          }
+        }
+        list.splice(index,1)
       }
     )
     .subscribe()

@@ -10,10 +10,12 @@ const authStore = useAuthStore()
 
 <template>
     <template v-if="authStore.loggedUser">
-        <div style="max-height: 300px;overflow-y: auto;" class="shadow-sm p-3 bg-secondary-outline">
-            <h3>Notifications</h3>
+        <div class="p-3">
             <template v-if="notificationStore.list" v-for="not in notificationStore.list" :key="not.id">
                 <Notification :notification="not"></Notification>
+            </template>
+            <template v-else>
+                No notification for now!
             </template>
         </div>
     </template>

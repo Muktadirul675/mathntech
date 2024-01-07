@@ -23,8 +23,7 @@ let bookmarks = computed(()=>{
 
 <template>
     <div>
-        <div class="p-3 rounded shadow-sm my-2" v-if="bookmarks">
-            <h3>Bookmarks</h3>
+        <div class="p-3 my-2" v-if="bookmarks">
             <div v-for="bookmark in bookmarks">
                 <a style="display:inline-block" data-bs-dismiss="offcanvas"
                         aria-label="Close" @click="router.push({name:'article',params:{id:bookmark.article.id}})">
@@ -35,7 +34,7 @@ let bookmarks = computed(()=>{
             </div>
         </div>
         <div v-else>
-            No bookmarks
+            No bookmarks right now. Click on '<i class="fi fi-br-bookmark text-warning"></i>' this button to add bookmarks.
         </div>
     </div>
 </template>

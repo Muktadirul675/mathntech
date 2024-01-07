@@ -11,9 +11,9 @@ let article = props.article;
 <template>
     <div class="articleCard p-3 shadow-sm">
         <div style="position: relative;" class="p-1 mx-1">
-            <h4>
+            <h5>
                 <RouterLink :to="{name:'post',params:{id:article.id}}" v-html="article.title"></RouterLink>
-            </h4>
+            </h5>
             <span class="bg-warning px-2 py-1 text-white my-2" style="border-radius: 30px;">{{ article.subject }}</span>
             <Tags :article="article"></Tags>
         </div>

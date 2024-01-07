@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { supabase } from '@/lib/supabase.js';
 import { useAuthStore } from "@/stores/authStore.js"
@@ -8,6 +8,7 @@ import Notifications from './Notifications.vue'
 
 let authStore = useAuthStore()
 const router = useRouter()
+let activeTab = ref(1)
 
 onBeforeMount(() => {
     authStore.checkUser()
@@ -17,6 +18,14 @@ function signInWithGoogle() {
     supabase.auth.signInWithOAuth({
         provider: 'google',
     })
+}
+
+function activeNotification(){
+    activeTab.value = 1
+}
+
+function activeBookmark(){
+    activeTab.value = 2
 }
 
 </script>
@@ -66,8 +75,38 @@ function signInWithGoogle() {
                             class="btn btn-success mx-1" data-bs-dismiss="offcanvas">Add Series</button>
                     </div>
                 </div> <br>
-                <Notifications></Notifications> <br>
-                <BookmarkList></BookmarkList>
+                <div class="p-0">
+                    <div class="custom_tab">
+                        <div @click="activeNotification">
+                            <template v-if="activeTab == 1">
+                                <div class="custom_tab_nav active_tab">
+                                    Notifications
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="custom_tab_nav">
+                                    Notifications
+                                </div>
+                            </template>
+                        </div>
+                        <div @click="activeBookmark">
+                            <template v-if="activeTab == 2">
+                                <div class="custom_tab_nav active_tab">
+                                    Bookmarks
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="custom_tab_nav">
+                                    Bookmarks
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="custom_tab_body p-3">
+                        <Notifications v-if="activeTab == 1"></Notifications>
+                        <BookmarkList v-if="activeTab == 2"></BookmarkList>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,4 +134,38 @@ function signInWithGoogle() {
     height: 30px;
     widows: 30px;
     margin-right: 5px;
-}</style>
+}
+
+.custom_tab {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+    /* background-color: rgba(255, 254, 220, 0.939); */
+}
+
+.custom_tab > div{
+    width: 50%;
+    text-align: center;
+}
+
+.custom_tab_nav.active_tab {
+    border-bottom: transparent;
+    border-top-right-radius: 10px; border-top-left-radius: 10px;
+    background-color: rgba(255, 254, 190, 0.939);
+}
+
+.custom_tab > div .custom_tab_nav{
+    padding: 10px;
+}
+
+.custom_tab_body{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 0.5px solid rgba(255, 254, 190, 0.939);
+}
+
+</style>

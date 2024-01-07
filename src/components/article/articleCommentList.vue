@@ -88,7 +88,7 @@ async function addComment(event) {
             toast.error("Comment can't be empty", { position: toast.POSITION.TOP_RIGHT })
         }
     } else {
-        toast.error('Login to comment', { position: toast.POSITION.TOP_RIGHT })
+        toast.error('Please login to comment', { position: toast.POSITION.TOP_RIGHT })
     }
 }
 
@@ -99,7 +99,6 @@ const channels = supabase.channel('comments')
         'postgres_changes',
         { event: '*', schema: 'public', table: 'comments' },
         (payload) => {
-            console.log('Change received!', payload)
             if (payload.eventType == 'INSERT') {
                 let newObj = payload.new
                 newObj.replies = new Array()
