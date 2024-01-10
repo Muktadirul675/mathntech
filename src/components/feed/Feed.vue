@@ -29,7 +29,7 @@ import FeedArticles from './FeedArticles.vue';
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-lg-4 col-xl-4 my-2">
+                    <div class="col-12 col-lg-4 col-xl-4 my-2 p-3">
                         <FeedSeries></FeedSeries>
                     </div>
                     <div class="col-12 col-lg-4 col-xl-4 my-2 p-3">

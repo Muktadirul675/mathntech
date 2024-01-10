@@ -1,11 +1,17 @@
-import { ref, computed, reactive, watch } from 'vue'
-import { defineStore } from 'pinia'
-import { supabase } from '@/lib/supabase.js'
-import { useAuthStore } from './authStore.js'
+import { ref, computed, reactive, watch } from 'vue';
+import { defineStore } from 'pinia';
+import { supabase } from '@/lib/supabase.js';
+import { useAuthStore } from './authStore.js';
+import { useArticleStore } from './articleStore.js';
+import { usePostStore } from './postStore.js';
+import { useSeriesStore } from './seriesStore.js';
 
 export const useNotificationStore = defineStore('notifications', () => {
   let list = reactive([])
   let authStore = useAuthStore()
+  let articleStore = useArticleStore()
+  let postStore = usePostStore()
+  let seriesStore = useSeriesStore()
   let unChecked = ref(0)
 
   watch(list, (newVal) => {
@@ -17,7 +23,9 @@ export const useNotificationStore = defineStore('notifications', () => {
   async function getNotifications() {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
-      const { data, error } = await supabase.from('notifications').select('*').eq('notifyTo', user.user_metadata.email).order('created_at', { ascending: false })
+      const { data, error } = await supabase.from('notifications').select('*, comment(*, article(*)), reply(*, comment(*, article(*))), article(*), post(*), series(*)').eq('notifyTo', user.user_metadata.email).order('created_at', { ascending: false })
+      // console.log(error)
+      // console.log(data)
       for (var i of data) { list.push(i) }
     }
   }
@@ -46,11 +54,21 @@ export const useNotificationStore = defineStore('notifications', () => {
     .on(
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'notifications' },
-      (payload) => {
+      async (payload) => {
         // console.log("changed recieved",payload.new)
         if (payload.new.notifyTo == authStore.loggedUser.email) {
           // console.log("changed recieved to you",payload.new)
-          list.unshift(payload.new)
+          const { data, error } = await supabase.from('notifications').select('*, comment(*, article(*)), reply(*, comment(*, article(*))), article(*), post(*), series(*)').eq("id",payload.new.id).limit(1).single()
+          // console.log(data)
+          // console.log(error)
+          if(data.type == "addArticle"){
+            articleStore.insertLocalArticle(data.article)
+          }else if(data.type == "addPost"){
+            postStore.insertLocalArticle(data.post)
+          }else if(data.type == "addSeries"){
+            seriesStore.insertLocalSeries(data.series)
+          }
+          list.unshift(data)
         }
       }
     )
@@ -62,15 +80,15 @@ export const useNotificationStore = defineStore('notifications', () => {
       'postgres_changes',
       { event: 'DELETE', schema: 'public', table: 'notifications' },
       (payload) => {
-        console.log('Change received!', payload)
+        // console.log('Change received!', payload)
         let index;
-        for(var i in list){
-          if(list[i].id == payload.old.id){
+        for (var i in list) {
+          if (list[i].id == payload.old.id) {
             index = i;
             break;
           }
         }
-        list.splice(index,1)
+        list.splice(index, 1)
       }
     )
     .subscribe()

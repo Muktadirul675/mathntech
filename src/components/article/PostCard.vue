@@ -11,10 +11,11 @@ let article = props.article;
 <template>
     <div class="articleCard p-3 shadow-sm">
         <div style="position: relative;" class="p-1 mx-1">
-            <h5>
+            <h6>
                 <RouterLink :to="{name:'post',params:{id:article.id}}" v-html="article.title"></RouterLink>
-            </h5>
-            <span class="bg-warning px-2 py-1 text-white my-2" style="border-radius: 30px;">{{ article.subject }}</span>
+            </h6>
+            <small class="bg-warning px-2 py-1 text-white" style="border-radius: 30px;">{{ article.subject }}</small>
+            <div class="my-1"></div>
             <Tags :article="article"></Tags>
         </div>
     </div>

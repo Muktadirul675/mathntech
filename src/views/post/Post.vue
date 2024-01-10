@@ -7,6 +7,7 @@ import ArticleCommentList from '@/components/article/articleCommentList.vue';
 import Loading from '@/components/Loading.vue';
 import BookmarkSign from '@/components/article/BookmarkSign.vue';
 import Tags from '@/components/article/Tags.vue';
+import RelatedPosts from './RelatedPosts.vue';
 
 const articleStore = usePostStore()
 const authStore = useAuthStore()
@@ -16,6 +17,10 @@ const article = computed(() => {
     if (articleStore.articles) { return articleStore.getArticle(id) }
     else { return null }
 })
+
+async function copyUrl(){
+    navigator.clipboard.writeText(window.location.href)
+}
 
 </script>
 
@@ -54,8 +59,8 @@ const article = computed(() => {
                         <div id="commentTool" class="tool text-warning">
                             <i class="fi fi-rr-comments"></i>
                         </div>
-                        <div class="tool text-warning">
-                            <i class="fi fi-rr-share-square"></i>
+                        <div @click="copyUrl" class="tool text-warning">
+                            <i class="fi fi-rr-share"></i>
                         </div>
                         <!-- <div class="tool text-danger">
                             <i class="fi fi-rr-exclamation"></i>
@@ -69,6 +74,11 @@ const article = computed(() => {
                 <ArticleCommentList :article="article"></ArticleCommentList>
             </div>
         </div>
+        <div v-if="article" class="row justify-content-center p-0">
+            <div class="col-12 col-lg-7 col-xl-7">
+                <RelatedPosts :article="article"></RelatedPosts>
+            </div>
+        </div> <br>
     </div>
 </template>
 

@@ -9,8 +9,10 @@ let isLogged = computed(() => authStore.logged)
 let isSubscribed = ref(null)
 
 async function checkSubscription() {
-    const { data } = await supabase.from('subscriptions').select('*').eq('email', authStore.loggedUser.email)
-    if (data){if(data.length > 0) { isSubscribed.value = true } else { isSubscribed.value = false }}
+    const { data,error } = await supabase.from('subscribers').select('*').eq('email', authStore.loggedUser.email).limit(1).single()
+    if(data){isSubscribed.value = true;}else{isSubscribed.value=false;}
+    // console.log(data)
+    // console.log(error)
 }
 
 watch(isLogged, (newVal, oldVal) => {
@@ -22,7 +24,7 @@ watch(isLogged, (newVal, oldVal) => {
 
 async function addSubscription() {
     if (authStore.logged) {
-        const { error } = await supabase.from('subscription').insert([{
+        const { error } = await supabase.from('subscribers').insert([{
             email: authStore.loggedUser.email,
             full_name: authStore.loggedUser.full_name
         }])
@@ -43,14 +45,14 @@ async function addSubscription() {
                 <b>Newsletter!</b> <br>
                 <small>Get email alerts for important articles and serieses!</small>
                 
-                <div v-if="isSubscribed != null">
+                <!-- <div v-if="isSubscribed != null">
                     <div v-if="isSubscribed">
                         <b>Subscribed!</b>
                     </div>
                     <div v-else>
                         <button @click="addSubscription" class="btn btn-warning">Subscribe</button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

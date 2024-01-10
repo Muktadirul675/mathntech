@@ -56,7 +56,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
             'postgres_changes',
             { event: '*', schema: 'public', table: 'bookmarks' },
             (payload) => {
-                console.log('Change received!', payload)
+                // console.log('Change received!', payload)
                 if (payload.eventType == "INSERT") {
                     let article = articleStore.getArticle(payload.new.article)
                     let obj = payload.new

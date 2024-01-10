@@ -44,5 +44,9 @@ export const useArticleStore = defineStore('articles', () => {
 
     getFeaturedArticle()
 
-    return { articles, loading, getArticle, featured }
+    function insertLocalArticle(newArticle){
+        articles.push(newArticle)
+    }
+
+    return { articles, loading, getArticle, featured, insertLocalArticle }
 })

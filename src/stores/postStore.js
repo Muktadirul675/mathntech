@@ -28,5 +28,9 @@ export const usePostStore = defineStore('posts', () => {
         }
     }
 
-    return { articles, loading, getArticle }
+    function insertLocalArticle(newArticle){
+        articles.push(newArticle)
+    }
+
+    return { articles, loading, getArticle, insertLocalArticle }
 })

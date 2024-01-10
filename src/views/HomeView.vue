@@ -1,7 +1,34 @@
 <script setup>
 import Feed from '@/components/feed/Feed.vue'
 import { onMounted, ref } from 'vue';
-import {supabase} from '@/lib/supabase.js'
+import { supabase } from '@/lib/supabase.js'
+
+import emailjs from '@emailjs/browser';
+
+emailjs.init('8xYSvW6a48vwYUTsK')
+
+function sendEmail() {
+  emailjs.sendForm('service_1c8ddra', 'template_eac0g3f', '#mailForm')
+    .then((result) => {
+      console.log('SUCCESS!', result.text);
+    }, (error) => {
+      console.log('FAILED...', error.text);
+    });
+}
+
+function send(){
+  emailjs.send('service_1c8ddra', 'template_eac0g3f', {
+    from_name: 'Mahi',
+    user_email: 'muktadirul.05@gmail.com',
+    postId:20,
+    message: 'Hello'
+  })
+  .then((result) => {
+      console.log('SUCCESS!', result.text);
+    }, (error) => {
+      console.log('FAILED...', error.text);
+    });
+}
 
 </script>
 

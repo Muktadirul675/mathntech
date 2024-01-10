@@ -24,8 +24,8 @@ let type = props.type;
     height: calc(100% * (9/16));
 }
 .hArticleImg img{
-    width: 160px;
-    height: 90px;
+    width: 100%;
+    /* height: 72px; */
     border-radius: 8px;
 }
 </style>

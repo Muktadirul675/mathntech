@@ -25,21 +25,21 @@ function truncate(value, length) {
     <div class="articleCard p-0 shadow-sm my-1">
         <div class="image">
             <ArticleImage :article="article" type="vArticle"></ArticleImage>
-        </div> <br>
-        <div class="heading p-3">
+        </div> 
+        <div class="heading px-2 py-2">
             <h6> 
                 <RouterLink v-if="props.type == 'article'" :to="{name:'article',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>
                 <RouterLink v-if="props.type == 'series'" :to="{name:'series',params:{id:article.id}}" v-html="article.title">
                 </RouterLink>
             </h6>
-            <span class="subject bg-warning text-white px-2 py-1" style="border-radius: 30px; font-size: smaller;">{{
-                article.subject }}</span>
-            <div class="row">
-                <div class="col-11">
+            <small class="subject bg-warning text-white px-2 py-1" style="border-radius: 30px; ">{{
+                article.subject }}</small>
+            <div class="row p-2">
+                <div class="col-10">
                     <Tags :article="article"></Tags>
                 </div>
-                <div v-if="props.type == 'article'" class="col-1 p-1">
+                <div v-if="props.type == 'article'" class="col-2" style="display: flex;justify-content: end;">
                     <BookmarkSign :article="article"></BookmarkSign>
                 </div>
             </div>

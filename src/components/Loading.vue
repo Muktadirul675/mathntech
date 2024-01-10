@@ -290,7 +290,7 @@ setInterval(getLoadingMsg, 5000);
 </script>
 
 <template>
-    <div class="spinner">
+    <div class="spinner p-3">
         <div class="spinnerContainer">
             <img :src="getImgUrl()" class="loadingImg" alt=""> <br>
             <span>{{ loadingMessage }}</span> <br> <br>

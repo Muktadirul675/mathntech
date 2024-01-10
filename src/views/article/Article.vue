@@ -7,6 +7,7 @@ import ArticleCommentList from '@/components/article/articleCommentList.vue';
 import Loading from '@/components/Loading.vue';
 import BookmarkSign from '@/components/article/BookmarkSign.vue';
 import Tags from '@/components/article/Tags.vue';
+import RelatedArticles from './RelatedArticle.vue';
 
 const articleStore = useArticleStore()
 const authStore = useAuthStore()
@@ -72,7 +73,12 @@ async function copyUrl(){
             <div class="col-12 col-lg-7 col-xl-7">
                 <ArticleCommentList :article="article"></ArticleCommentList>
             </div>
-        </div>
+        </div> <br>
+        <div v-if="article" class="row justify-content-center p-0">
+            <div class="col-12 col-lg-7 col-xl-7">
+                <RelatedArticles :article="article"></RelatedArticles>
+            </div>
+        </div> <br>
     </div>
 </template>
 

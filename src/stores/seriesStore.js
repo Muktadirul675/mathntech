@@ -27,5 +27,9 @@ export const useSeriesStore = defineStore('series', () => {
         }
     }
 
-    return { series,isLoading, getSeriesWithId }
+    function insertLocalSeries(newSeries){
+        series.push(newSeries)
+    }
+
+    return { series,isLoading, getSeriesWithId, insertLocalSeries }
 })

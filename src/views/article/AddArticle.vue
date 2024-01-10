@@ -13,7 +13,6 @@ let titleEditor = ref(null);
 let bodyEditor = ref(null);
 let imgLink = ref(null);
 let tagStr = ref(null);
-let time = ref(null);
 let subject = ref(null);
 let type = ref(null);
 let status = ref(null);
@@ -74,7 +73,7 @@ onBeforeMount(() => {
                     <input type="radio" v-model="status" value="public" name="status" id=""> Public
                     <input type="radio" v-model="status" value="hidden" name="status" id=""> Hidden
                 </form>
-                <button @click="add">Add</button>
+                <button class="btn btn-warning" @click="add">Add</button>
             </div>
         </div>
     </div>
